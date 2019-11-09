@@ -1,4 +1,3 @@
-
 # project-1 : Air BnB for bathrooms
 
   
