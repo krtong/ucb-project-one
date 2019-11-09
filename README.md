@@ -5,5 +5,3 @@
 - John T.
 - Kevin T.
 - Lila O.
-
-Hello
