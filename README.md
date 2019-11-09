@@ -1,7 +1,9 @@
 # project-1
 
 # team members 
-- Alex
-- John 
-- Kevin
-- Lila
+- Alex L. 
+- John T.
+- Kevin T.
+- Lila O.
+
+Hello
