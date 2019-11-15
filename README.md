@@ -39,4 +39,8 @@
 2. Create User sign up/login
 3. Create bathroom classified
 4. Create User Bathroom rating system
+<<<<<<< HEAD
 5. Create Host user rating system.
+zz
+5. Create Host user rating system.
+>>>>>>> 9a0b011b6f5b54ff22865b1d1f1b39458a2d6b0d
