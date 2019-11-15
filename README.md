@@ -1,17 +1,10 @@
 
-<<<<<<< HEAD
 # team members 
-<<<<<<< HEAD
 - Alex
 - John 
 - Kevin
 - Lila
 
-
-wassup
-=======
-- Alex L. 
-=======
 # project-1 : Air BnB for bathrooms
 
   
@@ -20,18 +13,11 @@ wassup
 
 - Alex L.
 
->>>>>>> 9a0b011b6f5b54ff22865b1d1f1b39458a2d6b0d
 - John T.
 
 - Kevin T.
 
 - Lila O.
-
-<<<<<<< HEAD
-Hello
->>>>>>> d109803ef1121f187bc3b7a0e71fa0a3904998fd
-=======
-  
 
 # current concept: waze for bathrooms
 
@@ -63,4 +49,3 @@ Hello
 3. Create bathroom classified
 4. Create User Bathroom rating system
 5. Create Host user rating system.
->>>>>>> 9a0b011b6f5b54ff22865b1d1f1b39458a2d6b0d
