@@ -1,7 +1,5 @@
-
 # project-1 : Air BnB for bathrooms
 
-  
 
 # team members
 
@@ -13,11 +11,8 @@
 
 - Lila O.
 
-  
 
 # current concept: waze for bathrooms
-
-  
 
 - create a web app that allows users to geotag bathroom classifieds.
   
