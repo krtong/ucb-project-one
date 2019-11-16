@@ -33,6 +33,3 @@ if ('geolocation' in navigator){
     else{
         console.log("geolocation not available")
     }
- 
-   
->>>>>>> c130b990dc04f4664d0be27c32fca09ec57b2d7f
