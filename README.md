@@ -11,7 +11,6 @@
 # current concept: waze for bathrooms
 
 - create a web app that allows users to geotag bathroom classifieds.
-  
 - allow users to rate geotagged bathroom locations.
 - allow bathroom owners to rate users.
 - (optional) PayPal
