@@ -1,6 +1,23 @@
-
-//checking firebase
+//firebase
 var database = firebase.database();
+
+
+
+//oAuth
+let client = new JSO({
+	providerID: "google",
+	client_id: "541950296471.apps.googleusercontent.com",
+	redirect_uri: "http://localhost:8080/", // The URL where you is redirected back, and where you perform run the callback() function.
+	authorization: "https://accounts.google.com/o/oauth2/auth",
+	scopes: { request: ["https://www.googleapis.com/auth/userinfo.profile"]}
+})
+
+
+
+
+
+
+// leaflet
 var mymap = L.map('mapid').setView([37.8715,122.2730], 13);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -20,8 +37,6 @@ function onMapClick(e) {
 }
 
 mymap.on('click', onMapClick);
-
-
 
 if ('geolocation' in navigator){
     console.log('geolocation available');
