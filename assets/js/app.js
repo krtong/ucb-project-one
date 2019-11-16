@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //firebase
 var database = firebase.database();
 
@@ -18,6 +19,13 @@ let client = new JSO({
 
 
 // leaflet
+=======
+
+
+//checking firebase
+var database = firebase.database();
+
+>>>>>>> e200af94d272f45b55f056816cdd2afa2fb0bc95
 var mymap = L.map('mapid').setView([37.8715,122.2730], 13);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
