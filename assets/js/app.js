@@ -41,6 +41,7 @@ if ('geolocation' in navigator){
 $('#get-coord').on("click", function(){
     event.preventDefault();
     var coords = $("#get-coord").val()
+   
 
     // database.ref().push({
     //     coords,
