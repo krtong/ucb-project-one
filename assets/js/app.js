@@ -1,7 +1,9 @@
 
 
 
-var mymap = L.map('mapid').setView([37.8715,122.2730], 13);
+
+
+var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -21,8 +23,6 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
-
-
 if ('geolocation' in navigator){
     console.log('geolocation available');
     navigator.geolocation.getCurrentPosition(position =>{
@@ -34,5 +34,8 @@ if ('geolocation' in navigator){
     else{
         console.log("geolocation not available")
     }
- 
-   
+$('#get-coord').on("click", function(){
+    event.preventDefault();
+    var coords = $("#get-coord").val()
+
+})

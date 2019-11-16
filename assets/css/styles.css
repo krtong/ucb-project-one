@@ -1,1 +1,11 @@
 #mapid { height: 300px; width:75%; }
+
+.card{
+    height:300px;
+    width:100%;
+}
+
+#thread-input{
+    width:100%;
+    height:100%;
+}
