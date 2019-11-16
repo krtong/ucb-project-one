@@ -1,4 +1,5 @@
 
+//checking firebase
 var database = firebase.database();
 var mymap = L.map('mapid').setView([37.8715,122.2730], 13);
 
