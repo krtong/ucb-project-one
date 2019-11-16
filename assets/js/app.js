@@ -1,5 +1,7 @@
 
+//  firebase.initializeApp(config);
 
+//  var dataRef = firebase.database();
 
 
 
@@ -34,8 +36,13 @@ if ('geolocation' in navigator){
     else{
         console.log("geolocation not available")
     }
+
+
 $('#get-coord').on("click", function(){
     event.preventDefault();
     var coords = $("#get-coord").val()
 
+    // database.ref().push({
+    //     coords,
+    // })
 })
