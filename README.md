@@ -1,3 +1,4 @@
+
 # project-1 : Air BnB for bathrooms
 
 
@@ -6,7 +7,6 @@
 - John T.
 - Kevin T.
 - Lila O.
-
 
 # current concept: waze for bathrooms
 
