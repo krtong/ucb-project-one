@@ -1,7 +1,11 @@
 body {
     background-color: #2a2135;
-    background: radial-gradient(#363636, #252525) !important;
+    background: radial-gradient(#292e3b, #261f83) !important;
     color: rgb(31, 31, 31);
+}
+
+nav {
+    background-image: linear-gradient(to bottom right, rgb(7, 76, 88), rgb(22, 45, 110), rgb(46, 14, 71), rgb(69, 14, 71)); 
 }
 
 html, body {
@@ -9,10 +13,15 @@ html, body {
  }
 
 #mapid {
-    height: 400px;
+    height: 100% !important;
     width: 100%;
 }
 
 .space {
     margin: 25px;
 }
+
+.p-r {
+    padding-right: 0;
+    padding-left: 0;
+    }
