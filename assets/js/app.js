@@ -1,5 +1,5 @@
 //firebase
-var database = firebase.database();
+// var database = firebase.database();
 
 //firebase authorization
 //can't figure out how to do this without NPM/Node
