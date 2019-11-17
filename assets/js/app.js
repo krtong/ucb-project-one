@@ -1,13 +1,8 @@
 //firebase
 var database = firebase.database();
 
-//checking firebase
-var database = firebase.database();
-
 //firebase authorization
-// import firebase from 'https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js';
-// import firebaseui from 'https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js';
-// var ui = new firebaseui.auth.AuthUI(firebase.auth());
+//can't figure out how to do this without NPM/Node
 
 // leaflet
 
