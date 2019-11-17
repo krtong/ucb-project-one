@@ -57,10 +57,12 @@ let threadData = {
         user: userData.pushkey1
     }
 }
-// leaflet
+// useless but funny
+const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
 
-let mymap = L.map('mapid').setView([17.73969749165746, -21.14395000623526], 2);
-
+let mymap = L.map('mapid')
+mymap.setView([17.73969749165746, -21.14395000623526], 2);
+$(`#button2`).attr("class", `btn btn-${bRCG()} map-btn`)
 
 mapLink = '<a href="http://www.esri.com/">Esri</a>';
 wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
@@ -88,11 +90,28 @@ let mapLayers = {
         maxZoom: 18,
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoiam9udHJ1b25nIiwiYSI6ImNrMnpteHlxdDA0Z24zaW5zdnh2dHRkNnYifQ.2TcrWXV6vkhipQnqDt_Qgw'
-    })
-
+    }),
+    terminator:  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
 }
 //this is how you change which layer is shown.
-mapLayers.googleHybrid.addTo(mymap);
+let currentLayer = mapLayers.googleHybrid;
+
+const initializeLayer = (layer) => layer.addTo(mymap);
+initializeLayer(currentLayer);
+L.terminator().addTo(mymap)
+
+// mymap.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'));
+const toggleLayer = function togglesBetweenMapLayers (event) {
+    let btnNumber = parseInt($(this).attr("number"))-1;
+    let key = Object.keys(mapLayers)
+    currentLayer.remove()
+    currentLayer = mapLayers[key[btnNumber]];
+    initializeLayer(currentLayer);
+    $(".map-btn").attr("class", "btn btn-secondary map-btn")
+    $(`#button${btnNumber+1}`).attr("class", `btn btn-${bRCG()} map-btn`)
+
+}
+
 
 //changes the values of lat/on on the document.
 const changeLatLon = function changesLatAndLongOnDocument(lat, lon){
@@ -137,6 +156,15 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
     let {lat, lng} = e.latlng;
     console.log([lat, lng]);
+    $.get(
+        `https://weather.cit.api.here.com/weather/1.0/report.json?product=observation&latitude=${lat}&longitude=%20-${lng}&oneobservation=true&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg`,
+        function(data, status){
+            console.log("get")
+            console.log(data)
+            console.logg(status)
+        }
+    )
+
     renderCoords('', e.latlng)
 };
 
@@ -210,3 +238,4 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 //initialize event handlers
 mymap.on('drag', renderCoords);
 mymap.on('click', onMapClick);
+$(document).on('click', ".map-btn", toggleLayer)

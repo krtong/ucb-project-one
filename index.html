@@ -9,13 +9,14 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <!-- leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
 
   <!-- Firebase Auth UI -->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
-  <title>Hello, world!</title>
+  <title>mapChat</title>
 </head>
 
 <body>
@@ -38,22 +39,22 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
           </li>
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
           <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
@@ -63,14 +64,14 @@
   </nav>
   <div class="container">
 
-    <!-- map goes here -->
     <div class="space"></div>
+    <!-- map goes here -->
 
     <div class="map jumbotron" id="mapid" style="height: 500px !important;"></div>
 
     <!-- subnavigation goes here -->
     <div class="row">
-      <div class="col-md-6">
+      <div class="col">
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
           <div class="btn-group mr-2" role="group" aria-label="First group">
             <button type="button" class="btn btn-outline-warning disabled">latitude</button>
@@ -80,16 +81,22 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 d-flex justify-content-end">
+      <div class="col">
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+          <!-- buttons that change between layers because why not -->
+          <button id="button1" type="button" class="btn btn-secondary map-btn" toggle="off" number="1">1</button>
+          <button id="button2" type="button" class="btn btn-secondary map-btn" toggle="off" number="2">2</button>
+          <button id="button3" type="button" class="btn btn-secondary map-btn" toggle="off" number="3">3</button>
+          <button id="button4" type="button" class="btn btn-secondary map-btn" toggle="off" number="4">4</button>
+          <button id="button5" type="button" class="btn btn-secondary map-btn" toggle="off" number="5">5</button>
+        </div>
+      </div>
+
+      <div class="col d-flex justify-content-end">
         <div class="btn-group " role="group" aria-label="Third group">
           <button type="button" class="btn btn-primary">create thread</button>
         </div>
       </div>
-
-
-
-
-
 
     </div>
     <div class="space"></div>
@@ -100,15 +107,14 @@
   </div>
 
   <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-    crossorigin=""></script>
 
+  <!-- leaflet -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet"></script>
+  <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
 
-  <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
