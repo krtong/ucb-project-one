@@ -1,1 +1,18 @@
-#mapid { height: 300px; width:75%; }
+body {
+    background-color: #2a2135;
+    background: radial-gradient(#363636, #252525) !important;
+    color: rgb(31, 31, 31);
+}
+
+html, body {
+    height: 100%;
+ }
+
+#mapid {
+    height: 400px;
+    width: 100%;
+}
+
+.space {
+    margin: 25px;
+}
