@@ -137,7 +137,6 @@ let threadData = {
         dateCreated: `2019-10-04 20:49:41` ,
         user: userData.pushkey1
     }
-
 }
 
 let todaysDate = Date.parse()
@@ -165,13 +164,8 @@ $('#thread-list').html(function () {
             <small>By ${userName} | 10 new replies</small>
             </a>
         `;
-
-        
-
         //adds marker
         var marker = L.marker([lat, lon]).addTo(mymap);
-
-
     }
     
     return html;
