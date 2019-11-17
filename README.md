@@ -3,19 +3,14 @@
 
 
 # team members
-
 - Alex L.
-
 - John T.
-
 - Kevin T.
-
 - Lila O.
 
 # current concept: waze for bathrooms
 - Hello - Lila
 - create a web app that allows users to geotag bathroom classifieds.
-  
 - allow users to rate geotagged bathroom locations.
 - allow bathroom owners to rate users.
 - (optional) PayPal

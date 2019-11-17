@@ -2,11 +2,18 @@
 //  firebase.initializeApp(config);
 
 //  var dataRef = firebase.database();
+//checking firebase
+
 
 
 
 var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
+// const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenSteetMap</a>'
+
+// const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+// const tiles = L.tileLayer(tileUrl, { attribution });
+// tiles.addTo(mymap);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -24,6 +31,8 @@ function onMapClick(e) {
 }
 
 mymap.on('click', onMapClick);
+
+
 
 if ('geolocation' in navigator){
     console.log('geolocation available');
@@ -43,7 +52,11 @@ $('#get-coord').on("click", function(){
     var coords = $("#get-coord").val()
    
 
-    // database.ref().push({
-    //     coords,
-    // })
+    database.ref().push({
+        coords,
+    })
+})
+
+$('add-thread').on('click', function(){
+    $('#new-thread').append('<textarea row="5" columns="50"></textarea>');
 })
