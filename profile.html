@@ -18,36 +18,69 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <a class="navbar-brand" href="#">Project 1</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                      <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="index.html">Home</a>
-                        <a class="nav-item nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
-                        <a class="nav-item nav-link" href="#">Sign-in</a>
-                      </nav>
-            
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top" alt="..." width="100px" height="200px">
-                            <div class="card-title">Name:</div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card">
-                            <div class="card-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">mapChat</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+              </ul>
+              <div class="form-inline my-2 my-lg-0">
+                    <input type="email" placeholder="Email" id="email-input" class="form-control">
+                    <input type="password" placeholder="Password" id="password-input" class="form-control">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+              </div>
             </div>
+          </nav>
+        
+<div class="container" id="bio-card">
+    <div class="row">
+        <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title" id="name">Name:</h5>
+              <p class="card-text" id="bio">Bio:</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" id="post-count">Posts:</li>
+              <li class="list-group-item" id= "last-log-in">Last log in:</li>
+              <li class="list-group-item" id="supporter-count">Supporters:</li>
+            </ul>
+            <div class="card-body">
+              <a href="#" class="card-link"><img src="assets/images/Twitter.png" height="40px" width="40px" alt="twitter"></a>
+              <a href="#" class="card-link"> <img src="assets/images/Facebook.png" height="40px" width="40px" alt="facebook"></a>
+              <a href="#" class="card-link"><img src="assets/images/Instagram.png" height="40px" width="40px" alt="instagram"></a>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+            
         
 
 
