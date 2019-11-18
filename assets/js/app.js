@@ -91,11 +91,7 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
-
-
-
 // user password hashing/retrieval
-
 
 // populate threads 
 let userData = {
