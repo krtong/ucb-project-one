@@ -1,5 +1,4 @@
 //firebase
-
 firebase.initializeApp({
     apiKey: "api-key",
     authDomain: "project-id.firebaseapp.com",
