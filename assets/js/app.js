@@ -20,10 +20,6 @@ $('#sign-in').on("click", function(){
 })
 
 
-
-
-
-
 ////////// INITIALIZE PAGE ///////////
 
 // initialize map
@@ -95,7 +91,6 @@ goToLocation()
 
 
 
-
 ////////// WHAT TO DO ON MAP CLICK ///////////
 //create popup on map click
     
@@ -108,8 +103,6 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
         $("#form-geohash").val(encodeGeoHash([lat, lng]))
 };
 ////////// END WHAT TO DO ON MAP CLICK ///////////
-
-
 
 
 
@@ -163,7 +156,7 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 ////////// END POPULATE THREAD LIST ///////////
 
 
-//signup form //
+//////////USER SIGN UP//////////
 
 //when signup in nav is clicked
 const signupButtonClicked = function () {
@@ -175,7 +168,7 @@ const signupSubmitButtonClicked = function () {
     console.log('click')
 }
 
-
+//////////END USER SIGN UP//////////
 
 ////////// CREATE THREAD FORM ///////////
 const createThreadBtnClick = function() {
@@ -291,6 +284,3 @@ $(document).on("click", "#signup-button", signupButtonClicked)
 $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
 
 ////////// END EVENT LISTENERS ///////////
-
-
-//WHAT THE FUCK
