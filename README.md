@@ -1,26 +1,19 @@
 
 # project-1 : Air BnB for bathrooms
 
-  
 
 # team members
-
 - Alex L.
-
 - John T.
-
 - Kevin T.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 91dd878dc20f7af385e0fcfdca5a80dcc16346eb
 - Lila O.
 
-  
-
 # current concept: waze for bathrooms
-
-  
-
 - create a web app that allows users to geotag bathroom classifieds.
-  
 - allow users to rate geotagged bathroom locations.
 - allow bathroom owners to rate users.
 - (optional) PayPal
@@ -44,4 +37,8 @@
 2. Create User sign up/login
 3. Create bathroom classified
 4. Create User Bathroom rating system
+<<<<<<< HEAD
 5. Create Host user rating system.
+=======
+5. Create Host user rating system.
+>>>>>>> 91dd878dc20f7af385e0fcfdca5a80dcc16346eb
