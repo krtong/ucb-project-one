@@ -38,3 +38,11 @@ html, body {
     padding-right: 0;
     padding-left: 0;
     }
+
+#username-input{
+    margin-right:10px;
+}
+
+#password-input{
+    margin-right:10px;
+}

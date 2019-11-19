@@ -1,7 +1,4 @@
 
-//firebase
-// var database = firebase.database();
-
 firebase.initializeApp({
     apiKey: "api-key",
     authDomain: "project-id.firebaseapp.com",
@@ -39,7 +36,7 @@ console.log(state)
 $('#sign-in').on("click", function(){
     event.preventDefault();
 
-    var name = $("#email-input").val().trim();
+    var name = $("#username-input").val().trim();
     var password = $('#password-input').val().trim();
 
     database.ref("/users").push({
