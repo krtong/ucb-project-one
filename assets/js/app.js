@@ -325,22 +325,6 @@ const submitButtonClicked = function(){
 
 
 
-//////////  CANCEL THREAD ///////////
-const cancelThread = function(){
-    $("#right-btn").html(`<button type="button" id="create-thread" class="btn btn-secondary">create thread</button>`)
-    $("#right-btn").attr("class", "btn btn-primary map-btn")
-
-}
-
-
-////////// END CANCEL THREAD ///////////
-
-
-
-
-
-
-
 ////////// START HELPER FUNCTIONS ///////////
 
 // geohash.js
