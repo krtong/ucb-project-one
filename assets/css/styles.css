@@ -21,6 +21,18 @@ html, body {
 .space {
     margin: 25px;
 }
+#email-input {
+    margin-right:10px;
+}
+#password-input {
+    margin-right:10px;
+}
+.card-img-top {
+    border-radius:50%;
+}
+#bio-card {
+    margin-top:10px;
+}
 
 .p-r {
     padding-right: 0;
