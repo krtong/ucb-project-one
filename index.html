@@ -29,6 +29,43 @@
 
   <!-- navbar goes here -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+      <a class="navbar-brand" href="#">mapChat</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+          <button id="signup-button">sign up</button>
+        </div>
     <a class="navbar-brand" href="#">mapChat</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +99,7 @@
       <div class="form-inline my-2 my-lg-0">
         <input type="email" placeholder="Email" id="email-input" class="form-control">
         <input type="password" placeholder="Password" id="password-input" class="form-control">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="sign-in">sign in</button>
       </div>
     </div>
   </nav>
@@ -108,6 +145,22 @@
       </div>
       <!-- create thread form  -->
       <form id="create-thread-form" class="card " toggle="off" style="display: none;">
+          <form>
+              <div class="form-group">
+                <label for="exampleInputUsername1">Create Username</label>
+                <input type="username" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="Enter Username">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Create Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password">
+                <small id="passwordHelp" class="form-text text-muted">We'll never share your password with anyone else.</small>
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
 
           <div class="form-label card-header">Create Thread </div>
           <div class="container" style="margin: 1em 0">
@@ -181,8 +234,8 @@
  </script>
 
  <!-- Firebase: database  -->
- <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
- <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-database.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-database.js"></script>
  <!-- <script src="./assets/js/firebase.js"></script> -->
 
  <!-- OAuth: user login / password encryption  -->

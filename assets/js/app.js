@@ -5,18 +5,20 @@ let state = 'thread list'
 console.log(state)
 
 //firebase
-// firebase.initializeApp({
-//     apiKey: "api-key",
-//     authDomain: "project-id.firebaseapp.com",
-//     databaseURL: "https://project-id.firebaseio.com",
-//     projectId: "project-id",
-//     storageBucket: "project-id.appspot.com",
-//     messagingSenderId: "sender-id",
-//     appId: "app-id",
-//     measurementId: "G-measurement-id",
-// });
+var firebaseConfig = {
+    apiKey: "AIzaSyDJfeUN0hpUhDkznGXEm65TkkiTmOx-Ll0",
+    authDomain: "project-one-1573334291920.firebaseapp.com",
+    databaseURL: "https://project-one-1573334291920.firebaseio.com",
+    projectId: "project-one-1573334291920",
+    storageBucket: "project-one-1573334291920.appspot.com",
+    messagingSenderId: "81848915222",
+    appId: "1:81848915222:web:5edc34f1cd5e3aab16ac37",
+    measurementId: "G-DNJZG83LR0"
+  };
 
-// let database = firebase.database();
+firebase.initializeApp(firebaseConfig);
+
+let database = firebase.database();
 
 //firebase authorization
 //can't figure out how to do this without NPM/Node
@@ -32,6 +34,21 @@ let userData = {
         }
     }
 }
+//Stuff to push onto firebase
+$('#sign-in').on("click", function(){
+    event.preventDefault();
+
+    var name = $("#email-input").val().trim();
+    var password = $('#password-input').val().trim();
+
+    database.ref("/users").push({
+        name,
+        password,
+    
+    });
+    console.log({name,password})
+})
+
 
 ////////// DATA OBJECTS ///////////
 // for ESRI
@@ -260,6 +277,10 @@ const createThreadBtnClick = function() {
     $("#cancel-thread").attr("class", `btn btn-warning map-btn`)
     displayFormToggle()
 };
+
+const signupFormComplete = function () {
+    console.log('click')
+}
 
 const displayFormToggle = (test) => {
     let bool = state === 'thread list' ? true : false;
@@ -490,4 +511,11 @@ $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
 $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
+<<<<<<< HEAD
 ////////// END EVENT LISTENERS ///////////
+=======
+$(document).on("click", "#signup-button", submitButtonClicked)
+////////// END EVENT LISTENERS ///////////
+
+
+>>>>>>> d79ec2f80c81ffa0eba8347d7d084fb618a16a9f
