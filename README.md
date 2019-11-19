@@ -34,3 +34,4 @@
 3. Create bathroom classified
 4. Create User Bathroom rating system
 5. Create Host user rating system.
+5. Create Host user rating system.

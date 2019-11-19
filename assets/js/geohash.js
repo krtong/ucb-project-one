@@ -85,7 +85,7 @@ function decodeGeoHash(geohash) {
 	}
 	lat[2] = (lat[0] + lat[1]) / 2;
 	lng[2] = (lng[0] + lng[1]) / 2;
-	return [lat[2], lng[2r]];
+	return [lat[2], lng[2]];
 }
 
 function encodeGeoHash(lngLatArr) {
@@ -121,9 +121,3 @@ function encodeGeoHash(lngLatArr) {
 	};
 	return geohash;
 }
-
-let coords = encodeGeoHash([37.898968718507604, -122.06153870073815])
-console.log(coords)
-
-let decodedCoords = decodeGeoHash(coords)
-console.log(decodedCoords)
