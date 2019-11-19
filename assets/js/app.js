@@ -6,18 +6,11 @@ console.log(state);
 $('#sign-in').on("click", function () {
     event.preventDefault();
 
-    var name = $("#email-input").val().trim();
-    var password = $('#password-input').val().trim();
+    const name = $("#email-input").val().trim();
+    const password = $('#password-input').val().trim();
 
-    database.ref("/users").push({
-        name,
-        password,
-
-    });
-    console.log({
-        name,
-        password
-    });
+    database.ref("/users").push({name,password});
+    console.log({name,password});
 })
 
 
@@ -29,8 +22,8 @@ let mymap = L.map('mapid');
 //start map at random longitude
 const rdmLatLon = function randomLatitudeAndLongitudeArray() {
     const randomNum = (min, max) => Math.random() * (max - min) + min;
-    let lat = randomNum(33, 45)
-    let lon = randomNum(-128, -80)
+    const lat = randomNum(33, 45)
+    const lon = randomNum(-128, -80)
     return [lat, lon]
 }
 mymap.setView(rdmLatLon(), 12);
@@ -40,6 +33,8 @@ let currentLayerIdx = Math.random() > 0.5 ? 2 : 4;
 //should be the key name of the layer object 
 let currentLayer = Object.keys(mapLayers)[currentLayerIdx];
 
+// useless but funny button color creator
+const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
 
 // set initial values for map layers
 const initializeLayer = (layerKey = currentLayer) => {
@@ -49,9 +44,6 @@ const initializeLayer = (layerKey = currentLayer) => {
 
     // every time there's a layer change you need to invoke L.terminator to bring back the day/night overlay.
     L.terminator().addTo(mymap);
-
-    // useless but funny button color creator
-    const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
 
     //populate layer buttons 
     $("#layer-btns-go-here").html(function () {
@@ -68,13 +60,12 @@ initializeLayer(currentLayer);
 const removeMapLayer = function(layerKey){
     mapLayers[currentLayer].remove();
 }
-// on button click change layer values 
+// on map button click change layer values 
 const toggleLayer = function togglesBetweenMapLayers(event) {
     let btnNumber = parseInt($(this).attr("number")) - 1;
-    let key = Object.keys(mapLayers);
-    currentLayer.remove();
-    currentLayer = mapLayers[key[btnNumber]];
-    initializeLayer(currentLayer);
+    let newMapLayer = Object.keys(mapLayers)[btnNumber];
+    mapLayers[currentLayer].remove()
+    initializeLayer(newMapLayer);
     $("#layer-btns-go-here").children(".map-btn").attr("class", 'btn btn-secondary map-btn');
     $(`#button${btnNumber+1}`).attr("class", `btn btn-${bRCG()} map-btn`);
 };
@@ -136,14 +127,11 @@ goToLocation()
 const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
-    let {
-        lat,
-        lng
-    } = e.latlng;
-    console.log([lat, lng]);
+    const {lat,lng} = e.latlng;
     postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
     $("#form-geohash").val(encodeGeoHash([lat, lng]));
+    setTimeout(function(){popup.remove()}, 3000)
 
 };
 ////////// END WHAT TO DO ON MAP CLICK ///////////
@@ -221,9 +209,6 @@ const signupSubmitButtonClicked = function () {
 ////////// CREATE THREAD FORM ///////////
 
 const createThreadBtnClick = function () {
-    setTimeout(function () {
-        $(".leaflet-popup").attr("style", "visibility: hidden; opacity: 0; transition: visibility 0.5s, opacity 0.5s linear;")
-    }, 8000)
     $("#right-btn").html(`<button type="button" id="cancel-thread" class="btn btn-secondary map-btn">cancel thread</button>`);
     $("#cancel-thread").attr("class", `btn btn-warning map-btn`);
     displayFormToggle();
@@ -259,13 +244,15 @@ const postAppendLatLng = function (lat, lng) {
     $("#form-longitude").val(lng.toString())
 };
 // on submit button click create object, clear form, add obj to dataObj, etc...
-const submitButtonClicked = function () {
+const threadSubmitButtonClicked = function () {
+    //create timestamp
     let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
-    var curr_date = d.getDate();
-    var curr_month = d.getMonth();
-    var curr_year = d.getFullYear();
+    const curr_date = d.getDate();
+    const curr_month = d.getMonth();
+    const curr_year = d.getFullYear();
     let dateCreated = curr_date + "-" + curr_month + "-" + curr_year;
 
+    //create data object
     let dataObj = {
         dateCreated,
         lat: $("#form-latitude").val(),
@@ -275,29 +262,32 @@ const submitButtonClicked = function () {
         body: $("#editor-container").val(),
         user: userData.pushkey1,
     };
-
+renderCoords
+    //fake database
+    //create fake pushkey for fake database
     const createPushkey = function (str = '') {
         for (let i = 0; i < 16; i++) {
-            let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789';
-            let randomIdx = Math.floor(Math.random() * 61);
+            const randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789';
+            const randomIdx = Math.floor(Math.random() * 61);
             str += randomStr[randomIdx];
         };
         return str
     };
-    //real database:
-    console.log("push this to firebase", dataObj);
     threadData[createPushkey()] = dataObj;
 
+
+    //real database:
+    console.log("push this to firebase", dataObj);
+
     //on completion:
+    renderCoords()
     displayFormToggle(false);
-    let {
-        heading,
-        body,
-        lat,
-        lon,
-        geohash
-    } = dataObj;
-    [heading, body, lat, lon, geohash].forEach(a => a = '');
+    const {heading,body,lat,lon,geohash} = dataObj;
+    $("#form-latitude").val('');
+    $("#form-longitude").val('');
+    $("#form-geohash").val('');
+    $("#form-title").val('');
+    $("#editor-container").val('');
     //fake database:
 };
 ////////// END CREATE THREAD FORM ///////////
@@ -309,16 +299,13 @@ const submitButtonClicked = function () {
 ////////// START HELPER FUNCTIONS ///////////
 //find threads on map and sort them by distance
 const findAndSortThreadsNearby = function findsThreadsOnMapAndSortsByDistance(coords) {
-    let latlng1 = coords ? coords : mymap.getCenter();
-    let keys = Object.keys(threadData);
+    const latlng1 = coords ? coords : mymap.getCenter();
+    const keys = Object.keys(threadData);
     let distances = [];
     // get distances from center of map
     for (let i = 0; i < keys.length; i++) {
-        let {
-            lat,
-            lon
-        } = threadData[keys[i]];
-        let latlng2 = [lat, lon];
+        const {lat,lon} = threadData[keys[i]];
+        const latlng2 = [lat, lon];
         distances.push([i, mymap.distance(latlng1, latlng2)]);
     };
     // sort threads by distances
@@ -329,10 +316,7 @@ const findAndSortThreadsNearby = function findsThreadsOnMapAndSortsByDistance(co
 
 //display changes to distance on each thread and in the lat-lon component
 const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
-    let {
-        lat,
-        lng
-    } = latlng ? latlng : mymap.getCenter();
+    const {lat,lng} = latlng ? latlng : mymap.getCenter();
     changeLatLon(lat, lng);
     findAndSortThreadsNearby([lat, lng]);
 }
@@ -349,7 +333,7 @@ mymap.on('click', onMapClick);
 $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
 $(document).on("click", "#cancel-thread", displayFormToggle)
-$(document).on("click", "#submit-btn", submitButtonClicked)
+$(document).on("click", "#submit-btn", threadSubmitButtonClicked)
 $(document).on("click", "#signup-button", signupButtonClicked)
 $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
 
