@@ -1,8 +1,8 @@
 
 
-// states are either 'thread list', 'create thread', 'create post',
-let state = 'thread list'
-console.log(state)
+// states are either 'thread list', 'create thread', 'view thread', 'create post', 'view profile', ...//
+let state = 'thread list';
+console.log(state);
 
 //Stuff to push onto firebase
 $('#sign-in').on("click", function(){
@@ -16,7 +16,7 @@ $('#sign-in').on("click", function(){
         password,
     
     });
-    console.log({name,password})
+    console.log({name,password});
 })
 
 
@@ -24,7 +24,7 @@ $('#sign-in').on("click", function(){
 
 // initialize map
 let mymap = L.map('mapid');
-mymap.setView([17.73969749165746, -21.14395000623526], 2);
+mymap.setView([17, Math.floor(Math.random() * 180)], 3);
 
 //initial layer shown on pageload
 let currentLayer = mapLayers.googleHybrid;
@@ -32,7 +32,7 @@ let currentLayer = mapLayers.googleHybrid;
 // set initial values for map layers
 const initializeLayer = (layer) => layer.addTo(mymap);
 initializeLayer(currentLayer);
-L.terminator().addTo(mymap)
+L.terminator().addTo(mymap);
 
 // useless but funny button color creator
 const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
@@ -41,36 +41,43 @@ const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.f
 $("#layer-btns-go-here").html(function(){
     let html = '<button type="button" class="btn btn-secondary disabled map-btn">Map layers:</button>'
     Object.keys(mapLayers).forEach((a, i)=> html += `
-    <button id="button${i+1}" type="button" class="btn btn-secondary map-btn" number="${i+1}">${i+1}</button>
+    <button id="button${i+1}" type="button" class="btn btn-${i+1 === 2 ? bRCG() : 'secondary'} map-btn" number="${i+1}">${i+1}</button>
     `);
     return html;
-})
-
-$(`#button2`).attr("class", `btn btn-${bRCG()} `)
+});
 
 // on button click change layer values 
 const toggleLayer = function togglesBetweenMapLayers(event) {
     let btnNumber = parseInt($(this).attr("number")) - 1;
-    let key = Object.keys(mapLayers)
-    currentLayer.remove()
+    let key = Object.keys(mapLayers);
+    currentLayer.remove();
     currentLayer = mapLayers[key[btnNumber]];
     initializeLayer(currentLayer);
-    $(".map-btn").attr("class", "btn btn-secondary map-btn")
-    $(`#button${btnNumber+1}`).attr("class", `btn btn-${bRCG()} map-btn`)
-}
+    $("#layer-btns-go-here").children(".map-btn").attr("class", 'btn btn-secondary map-btn');
+    $(`#button${btnNumber+1}`).attr("class", `btn btn-${bRCG()} map-btn`);
+};
 
 
 //changes the values of lat/on on the document.
 const changeLatLon = function changesLatAndLongOnDocument(lat, lon) {
     $("#lat").text(lat.toFixed(5));
     $('#lon').text(lon.toFixed(5));
-}
+};
 
 // go to location
 const goToLocation = function() {
     if ('geolocation' in navigator) {
         console.log('geolocation available');
+        let stillWaiting = true;
+        let count = 1;
+        setInterval(function(){
+            if (stillWaiting) {
+            mymap.panBy([1, 0], {pan:{animate: true, duration: 0.01}})
+                // count = count > 180 ? count - 180 : count + 1;
+            };
+        }, 100);
         navigator.geolocation.getCurrentPosition(position => {
+            stillWaiting = false;
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             //flies to location
@@ -80,7 +87,7 @@ const goToLocation = function() {
             let marker = L.marker([lat, lng]).addTo(mymap);
         });
     } else {
-        console.log("geolocation not available")
+        console.log("geolocation not available");
     };
 };
 
@@ -98,9 +105,10 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
     let {lat,lng} = e.latlng;
     console.log([lat, lng]);
-        postAppendLatLng(lat, lng)
+        postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
-        $("#form-geohash").val(encodeGeoHash([lat, lng]))
+        $("#form-geohash").val(encodeGeoHash([lat, lng]));
+        
 };
 ////////// END WHAT TO DO ON MAP CLICK ///////////
 
@@ -151,62 +159,73 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
         threadMarkerArray.push(L.marker([lat, lon]).addTo(mymap));
     });
     //append html to threadlist
-    $('#thread-list').html(threadListHTML)
+    $('#thread-list').html(threadListHTML);
 };
 ////////// END POPULATE THREAD LIST ///////////
+
+
+
+
+
 
 
 //////////USER SIGN UP//////////
 
 //when signup in nav is clicked
 const signupButtonClicked = function () {
-    console.log('click')
-}
+    console.log('click');
+};
 
 //when submit button is clicked
 const signupSubmitButtonClicked = function () {
-    console.log('click')
-}
+    console.log('click');
+};
 
 //////////END USER SIGN UP//////////
 
+
+
+
+
+
 ////////// CREATE THREAD FORM ///////////
+
 const createThreadBtnClick = function() {
-    $("#right-btn").html(`<button type="button" id="cancel-thread" class="btn btn-secondary map-btn">cancel thread</button>`)
-    $("#cancel-thread").attr("class", `btn btn-warning map-btn`)
-    displayFormToggle()
+    setTimeout(function(){$(".leaflet-popup").attr("style", "visibility: hidden; opacity: 0; transition: visibility 0.5s, opacity 0.5s linear;")}, 8000)
+    $("#right-btn").html(`<button type="button" id="cancel-thread" class="btn btn-secondary map-btn">cancel thread</button>`);
+    $("#cancel-thread").attr("class", `btn btn-warning map-btn`);
+    displayFormToggle();
 };
 
 const signupFormComplete = function () {
-    console.log('click')
+    console.log('click');
 }
 
 const displayFormToggle = (test) => {
     let bool = state === 'thread list' ? true : false;
     if (test) bool = test;
     state = bool ? 'create thread' : 'thread list';
-    console.log(state)
+    console.log(state);
     //bool === true if threads are showing and list is hidden
-    let threadList = $("#thread-list")
+    let threadList = $("#thread-list");
     let createThreadForm = $("#create-thread-form");
     let createThread = $("#create-thread");
     let cancelThread = $("#cancel-thread");
 
     //values are meant to flip to the opposite of the current state
     [threadList, createThreadForm, createThread, cancelThread].forEach(a => {
-        console.log(a.attr("toggle"))
+        console.log(a.attr("toggle"));
         let toggle = a.attr("toggle") === 'off';
         a.attr("toggle", `${toggle ? 'on' : 'off'}`)
         a.attr("style", `${toggle ? 'display: show;' : 'display: none;'}`)
     });
-}
-
-
+    
+};
 
 const postAppendLatLng = function(lat, lng) {
     $("#form-latitude").val(lat.toString())
     $("#form-longitude").val(lng.toString())
-}
+};
 // on submit button click create object, clear form, add obj to dataObj, etc...
 const submitButtonClicked = function(){
     let d = new Date();//Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
@@ -227,22 +246,22 @@ const submitButtonClicked = function(){
 
     const createPushkey = function(str = '') {
         for (let i = 0; i < 16; i++) {
-            let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789'
-            let randomIdx = Math.floor(Math.random() * 61)
+            let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789';
+            let randomIdx = Math.floor(Math.random() * 61);
             str += randomStr[randomIdx];
-        }
+        };
         return str
-    } 
+    };
     //real database:
-    console.log("push this to firebase", dataObj)
+    console.log("push this to firebase", dataObj);
     threadData[createPushkey()] = dataObj;
     
     //on completion:
-    displayFormToggle(false)
+    displayFormToggle(false);
     let {heading, body, lat, lon, geohash} = dataObj;
     [heading, body, lat, lon, geohash].forEach(a => a = '');
     //fake database:
-}
+};
 ////////// END CREATE THREAD FORM ///////////
 
 
@@ -278,6 +297,9 @@ const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
 }
 
 ////////// END HELPER LISTENERS ///////////
+
+
+
 
 ////////// EVENT LISTENERS ///////////
 //initialize event handlers
