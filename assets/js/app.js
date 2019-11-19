@@ -24,6 +24,7 @@ $('#sign-in').on("click", function(){
 
 // initialize map
 let mymap = L.map('mapid');
+//start map at random longitude
 mymap.setView([17, Math.floor(Math.random() * 180)], 3);
 
 //initial layer shown on pageload
@@ -70,12 +71,16 @@ const goToLocation = function() {
         console.log('geolocation available');
         let stillWaiting = true;
         let count = 1;
+
+        //pan map until location is selected.
         setInterval(function(){
             if (stillWaiting) {
             mymap.panBy([1, 0], {pan:{animate: true, duration: 0.01}})
                 // count = count > 180 ? count - 180 : count + 1;
             };
         }, 100);
+
+        //once location is selected, fly to location.
         navigator.geolocation.getCurrentPosition(position => {
             stillWaiting = false;
             const lat = position.coords.latitude;
