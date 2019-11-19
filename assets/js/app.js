@@ -4,36 +4,6 @@
 let state = 'thread list'
 console.log(state)
 
-//firebase
-var firebaseConfig = {
-    apiKey: "AIzaSyDJfeUN0hpUhDkznGXEm65TkkiTmOx-Ll0",
-    authDomain: "project-one-1573334291920.firebaseapp.com",
-    databaseURL: "https://project-one-1573334291920.firebaseio.com",
-    projectId: "project-one-1573334291920",
-    storageBucket: "project-one-1573334291920.appspot.com",
-    messagingSenderId: "81848915222",
-    appId: "1:81848915222:web:5edc34f1cd5e3aab16ac37",
-    measurementId: "G-DNJZG83LR0"
-  };
-
-firebase.initializeApp(firebaseConfig);
-
-let database = firebase.database();
-
-//firebase authorization
-//can't figure out how to do this without NPM/Node
-
-// Fake data until we get firebase working... 
-let userData = {
-    pushkey1: {
-        userName: 'Kevin Tong',
-        hashedpw: 'password',
-        images: {
-            thumb: 'https://www.fillmurray.com/64/64',
-            full: 'https://www.fillmurray.com/400/400'
-        }
-    }
-}
 //Stuff to push onto firebase
 $('#sign-in').on("click", function(){
     event.preventDefault();
@@ -52,74 +22,7 @@ $('#sign-in').on("click", function(){
 
 ////////// DATA OBJECTS ///////////
 // for ESRI
-mapLink = '<a href="http://www.esri.com/">Esri</a>';
-wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-// let weatherOpen = `a448b20824`+`a829df46169`+`895466e5e13`
 
-//the jibberish is meant to represent pushkeys
-let threadData = {
-    dwlkjdKNDknddskdn: {
-        geohash:'',
-        lat: 37.898968718507604,
-        lon: -122.06153870073815,
-        heading: `This Taco Joint is da Bomb`,
-        body: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id nulla leo. Morbi venenatis quam egestas mi euismod tempor. Proin eleifend tellus quis ex molestie commodo. Vestibulum sit amet hendrerit risus. Duis vitae pulvinar turpis. Vestibulum id volutpat enim. Nunc vel nibh eget sem finibus lacinia vel eu augue. Phasellus eget quam tortor. Proin volutpat massa et metus efficitur consequat. Vestibulum at leo at ex euismod venenatis euismod vel tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce mi metus, fringilla sed venenatis viverra, ultrices vel metus.<br/><br/>
-        Ut sagittis dapibus nibh. Nullam tempor in augue ac aliquet. Duis tristique felis mi, et suscipit lacus pretium sed. Morbi maximus nisl non nibh semper, a congue velit efficitur. Donec vitae purus sed sem lobortis pellentesque sed at erat. Donec vulputate libero feugiat mi eleifend tincidunt et non nunc. Nullam commodo turpis odio, id gravida ligula porttitor at.`,
-        dateCreated: `2019-10-04 20:49:41`,
-        user: userData.pushkey1
-    },
-    SMDSNKwkjendasdnawe: {
-        lat: 37.89029895048281,
-        lon: -122.05570221443803,
-        heading: `Crazy Car Crash here`,
-        body: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id nulla leo. Morbi venenatis quam egestas mi euismod tempor. Proin eleifend tellus quis ex molestie commodo. Vestibulum sit amet hendrerit risus. Duis vitae pulvinar turpis. Vestibulum id volutpat enim. Nunc vel nibh eget sem finibus lacinia vel eu augue. Phasellus eget quam tortor. Proin volutpat massa et metus efficitur consequat. Vestibulum at leo at ex euismod venenatis euismod vel tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce mi metus, fringilla sed venenatis viverra, ultrices vel metus.<br/><br/>
-        Ut sagittis dapibus nibh. Nullam tempor in augue ac aliquet. Duis tristique felis mi, et suscipit lacus pretium sed. Morbi maximus nisl non nibh semper, a congue velit efficitur. Donec vitae purus sed sem lobortis pellentesque sed at erat. Donec vulputate libero feugiat mi eleifend tincidunt et non nunc. Nullam commodo turpis odio, id gravida ligula porttitor at.`,
-        dateCreated: `2019-10-04 20:49:41`,
-        user: userData.pushkey1
-    },
-    kskrnkAKJskndwmasdw: {
-        lat: 37.901813263649665,
-        lon: -122.06102371665287,
-        heading: `House Party at 8:00 am`,
-        body: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id nulla leo. Morbi venenatis quam egestas mi euismod tempor. Proin eleifend tellus quis ex molestie commodo. Vestibulum sit amet hendrerit risus. Duis vitae pulvinar turpis. Vestibulum id volutpat enim. Nunc vel nibh eget sem finibus lacinia vel eu augue. Phasellus eget quam tortor. Proin volutpat massa et metus efficitur consequat. Vestibulum at leo at ex euismod venenatis euismod vel tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce mi metus, fringilla sed venenatis viverra, ultrices vel metus.<br/><br/>
-        Ut sagittis dapibus nibh. Nullam tempor in augue ac aliquet. Duis tristique felis mi, et suscipit lacus pretium sed. Morbi maximus nisl non nibh semper, a congue velit efficitur. Donec vitae purus sed sem lobortis pellentesque sed at erat. Donec vulputate libero feugiat mi eleifend tincidunt et non nunc. Nullam commodo turpis odio, id gravida ligula porttitor at.`,
-        dateCreated: `2019-10-04 20:49:41`,
-        user: userData.pushkey1
-    }
-};
-
-// these are letious layers I've found online.
-let mapLayers = {
-    googleStreets: L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-        attribution: `Google Streets`,
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }),
-    googleHybrid: L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-        attribution: `Google Hybrid`,
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }),
-    googleSat: L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-        attribution: `Google Satellite`,
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }),
-    googleTerrain: L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
-        attribution: `Google Terrain`,
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }),
-    esri: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + mapLink + ', ' + wholink,
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken: 'pk.eyJ1Ijoiam9udHJ1b25nIiwiYSI6ImNrMnpteHlxdDA0Z24zaW5zdnh2dHRkNnYifQ.2TcrWXV6vkhipQnqDt_Qgw'
-    }),
-    // weatherMaps : L.tileLayer(`http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid={${weatherOpen}}`, {
-    //     attribution: `Open Weather Maps`,
-    // })
-};
 //////////END DATA OBJECTS ///////////
 
 
@@ -355,133 +258,6 @@ const submitButtonClicked = function(){
 
 
 ////////// START HELPER FUNCTIONS ///////////
-
-// geohash.js
-// Geohash library for Javascript
-// (c) 2008 David Troy
-// Distributed under the MIT License
-
-BITS = [16, 8, 4, 2, 1];
-
-BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
-NEIGHBORS = {
-	right: {
-		even: "bc01fg45238967deuvhjyznpkmstqrwx"
-	},
-	left: {
-		even: "238967debc01fg45kmstqrwxuvhjyznp"
-	},
-	top: {
-		even: "p0r21436x8zb9dcf5h7kjnmqesgutwvy"
-	},
-	bottom: {
-		even: "14365h7k9dcfesgujnmqp0r2twvyx8zb"
-	}
-};
-BORDERS = {
-	right: {
-		even: "bcfguvyz"
-	},
-	left: {
-		even: "0145hjnp"
-	},
-	top: {
-		even: "prxz"
-	},
-	bottom: {
-		even: "028b"
-	}
-};
-
-NEIGHBORS.bottom.odd = NEIGHBORS.left.even;
-NEIGHBORS.top.odd = NEIGHBORS.right.even;
-NEIGHBORS.left.odd = NEIGHBORS.bottom.even;
-NEIGHBORS.right.odd = NEIGHBORS.top.even;
-
-BORDERS.bottom.odd = BORDERS.left.even;
-BORDERS.top.odd = BORDERS.right.even;
-BORDERS.left.odd = BORDERS.bottom.even;
-BORDERS.right.odd = BORDERS.top.even;
-
-function refine_interval(interval, cd, mask) {
-	if (cd & mask)
-		interval[0] = (interval[0] + interval[1]) / 2;
-	else
-		interval[1] = (interval[0] + interval[1]) / 2;
-}
-
-function calculateAdjacent(srcHash, dir) {
-	srcHash = srcHash.toLowerCase();
-	let lastChr = srcHash.charAt(srcHash.length - 1);
-	let type = (srcHash.length % 2) ? 'odd' : 'even';
-	let base = srcHash.substring(0, srcHash.length - 1);
-	if (BORDERS[dir][type].indexOf(lastChr) != -1)
-		base = calculateAdjacent(base, dir);
-	return base + BASE32[NEIGHBORS[dir][type].indexOf(lastChr)];
-}
-
-function decodeGeoHash(geohash) {
-	let [isEven, latErr, lngErr] = [1, 90.0, 180.0];
-	let lat = [-90.0, 90.0];
-	let lng = [-180.0, 180.0];
-
-
-	for (i = 0; i < geohash.length; i++) {
-		c = geohash[i];
-		cd = BASE32.indexOf(c);
-		for (j = 0; j < 5; j++) {
-			mask = BITS[j];
-			if (isEven) {
-				lngErr /= 2;
-				refine_interval(lng, cd, mask);
-			} else {
-				latErr /= 2;
-				refine_interval(lat, cd, mask);
-			}
-			isEven = !isEven;
-		}
-	}
-	lat[2] = (lat[0] + lat[1]) / 2;
-	lng[2] = (lng[0] + lng[1]) / 2;
-	return [lat[2], lng[2]];
-}
-
-function encodeGeoHash(lngLatArr) {
-	let [latitude, lnggitude] = lngLatArr
-	let [isEven, i, bit, ch, precision, geohash] = [1, 0, 0, 0, 12, ""];
-	let lat = [-90.0, 90.0];
-	let lng = [-180.0, 180.0];
-
-	while (geohash.length < precision) {
-		if (isEven) {
-			mid = (lng[0] + lng[1]) / 2;
-			if (lnggitude > mid) {
-				ch |= BITS[bit];
-				lng[0] = mid;
-			} else
-				lng[1] = mid;
-		} else {
-			mid = (lat[0] + lat[1]) / 2;
-			if (latitude > mid) {
-				ch |= BITS[bit];
-				lat[0] = mid;
-			} else
-				lat[1] = mid;
-		}
-		isEven = !isEven;
-		if (bit < 4)
-			bit++;
-		else {
-			geohash += BASE32[ch];
-			bit = 0;
-			ch = 0;
-		}
-	};
-	return geohash;
-}
-
-
-
 //find threads on map and sort them by distance
 const findAndSortThreadsNearby = function findsThreadsOnMapAndSortsByDistance(coords) {
     let latlng1 = coords ? coords : mymap.getCenter();
@@ -505,9 +281,6 @@ const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
     changeLatLon(lat, lng);
     findAndSortThreadsNearby([lat, lng]);
 }
-
-//populates the thread list with threads and repopulates the associated markers. repopulates the thread list every time it's invoked.  
-
 
 ////////// END HELPER LISTENERS ///////////
 
