@@ -1,11 +1,9 @@
-
-
 // states are either 'thread list', 'create thread', 'view thread', 'create post', 'view profile', ...//
 let state = 'thread list';
 console.log(state);
 
 //Stuff to push onto firebase
-$('#sign-in').on("click", function(){
+$('#sign-in').on("click", function () {
     event.preventDefault();
 
     var name = $("#email-input").val().trim();
@@ -14,9 +12,12 @@ $('#sign-in').on("click", function(){
     database.ref("/users").push({
         name,
         password,
-    
+
     });
-    console.log({name,password});
+    console.log({
+        name,
+        password
+    });
 })
 
 
@@ -24,29 +25,49 @@ $('#sign-in').on("click", function(){
 
 // initialize map
 let mymap = L.map('mapid');
+
 //start map at random longitude
-mymap.setView([17, Math.floor(Math.random() * 180)], 3);
+const rdmLatLon = function randomLatitudeAndLongitudeArray() {
+    const randomNum = (min, max) => Math.random() * (max - min) + min;
+    let lat = randomNum(33, 45)
+    let lon = randomNum(-128, -80)
+    return [lat, lon]
+}
+mymap.setView(rdmLatLon(), 12);
 
 //initial layer shown on pageload
-let currentLayer = mapLayers.googleHybrid;
+let currentLayerIdx = Math.random() > 0.5 ? 2 : 4;
+//should be the key name of the layer object 
+let currentLayer = Object.keys(mapLayers)[currentLayerIdx];
+
 
 // set initial values for map layers
-const initializeLayer = (layer) => layer.addTo(mymap);
-initializeLayer(currentLayer);
-L.terminator().addTo(mymap);
+const initializeLayer = (layerKey = currentLayer) => {
+    currentLayer = layerKey;
+    currentLayerIdx = Object.keys(mapLayers).indexOf(layerKey)
+    mapLayers[layerKey].addTo(mymap)
 
-// useless but funny button color creator
-const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
+    // every time there's a layer change you need to invoke L.terminator to bring back the day/night overlay.
+    L.terminator().addTo(mymap);
 
-//populate layer buttons 
-$("#layer-btns-go-here").html(function(){
-    let html = '<button type="button" class="btn btn-secondary disabled map-btn">Map layers:</button>'
-    Object.keys(mapLayers).forEach((a, i)=> html += `
-    <button id="button${i+1}" type="button" class="btn btn-${i+1 === 2 ? bRCG() : 'secondary'} map-btn" number="${i+1}">${i+1}</button>
+    // useless but funny button color creator
+    const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
+
+    //populate layer buttons 
+    $("#layer-btns-go-here").html(function () {
+        let html = `<button type="button" class="btn btn-secondary disabled">${mapLayers[currentLayer].attribution}</button>`
+        Object.keys(mapLayers).forEach((a, i) => html += `
+    <button id="button${i+1}" type="button" class="btn btn-${i === currentLayerIdx ? bRCG() : 'secondary'} map-btn" number="${i+1}">${i+1}</button>
     `);
-    return html;
-});
+        return html;
+    });
+};
 
+initializeLayer(currentLayer);
+
+const removeMapLayer = function(layerKey){
+    mapLayers[currentLayer].remove();
+}
 // on button click change layer values 
 const toggleLayer = function togglesBetweenMapLayers(event) {
     let btnNumber = parseInt($(this).attr("number")) - 1;
@@ -66,28 +87,35 @@ const changeLatLon = function changesLatAndLongOnDocument(lat, lon) {
 };
 
 // go to location
-const goToLocation = function() {
+const goToLocation = function () {
     if ('geolocation' in navigator) {
         console.log('geolocation available');
         let stillWaiting = true;
         let count = 1;
-
         //pan map until location is selected.
-        setInterval(function(){
+        setInterval(function () {
             if (stillWaiting) {
-            mymap.panBy([1, 0], {pan:{animate: true, duration: 0.01}})
+                mymap.panBy([1, 0], {
+                    pan: {
+                        animate: true,
+                        duration: 0.01
+                    }
+                })
                 // count = count > 180 ? count - 180 : count + 1;
             };
         }, 100);
-
-        //once location is selected, fly to location.
+        //once location is selected, fly to location. go to location. fly to location
         navigator.geolocation.getCurrentPosition(position => {
             stillWaiting = false;
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             //flies to location
             mymap.flyTo([lat, lng], 13);
-            renderCoords('', {lat,lng});
+            initializeLayer('googleHybrid')
+            renderCoords('', {
+                lat,
+                lng
+            });
             //adds marker
             let marker = L.marker([lat, lng]).addTo(mymap);
         });
@@ -104,16 +132,19 @@ goToLocation()
 
 ////////// WHAT TO DO ON MAP CLICK ///////////
 //create popup on map click
-    
+
 const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
-    let {lat,lng} = e.latlng;
+    let {
+        lat,
+        lng
+    } = e.latlng;
     console.log([lat, lng]);
-        postAppendLatLng(lat, lng);
+    postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
-        $("#form-geohash").val(encodeGeoHash([lat, lng]));
-        
+    $("#form-geohash").val(encodeGeoHash([lat, lng]));
+
 };
 ////////// END WHAT TO DO ON MAP CLICK ///////////
 
@@ -132,9 +163,21 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
     let threadListHTML = '';
     threadArr.forEach((cur, idx) => {
         //easier letiables
-        const {lat,lon,heading,body,dateCreated,user} = cur[0];
-        const {userName,images} = user;
-        const {thumb} = images;
+        const {
+            lat,
+            lon,
+            heading,
+            body,
+            dateCreated,
+            user
+        } = cur[0];
+        const {
+            userName,
+            images
+        } = user;
+        const {
+            thumb
+        } = images;
         const distance = cur[1] * 3.28084; //converted from meters to  feet
         const distanceString = distance < 900 ? `${distance.toFixed(0)} feet` : distance < 1500 ? `${(distance/3).toFixed(0)} yards` : `${(distance*0.000189394).toFixed(1)} miles`
         const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)-1]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
@@ -170,10 +213,6 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 
 
 
-
-
-
-
 //////////USER SIGN UP//////////
 
 //when signup in nav is clicked
@@ -191,12 +230,12 @@ const signupSubmitButtonClicked = function () {
 
 
 
-
-
 ////////// CREATE THREAD FORM ///////////
 
-const createThreadBtnClick = function() {
-    setTimeout(function(){$(".leaflet-popup").attr("style", "visibility: hidden; opacity: 0; transition: visibility 0.5s, opacity 0.5s linear;")}, 8000)
+const createThreadBtnClick = function () {
+    setTimeout(function () {
+        $(".leaflet-popup").attr("style", "visibility: hidden; opacity: 0; transition: visibility 0.5s, opacity 0.5s linear;")
+    }, 8000)
     $("#right-btn").html(`<button type="button" id="cancel-thread" class="btn btn-secondary map-btn">cancel thread</button>`);
     $("#cancel-thread").attr("class", `btn btn-warning map-btn`);
     displayFormToggle();
@@ -224,16 +263,16 @@ const displayFormToggle = (test) => {
         a.attr("toggle", `${toggle ? 'on' : 'off'}`)
         a.attr("style", `${toggle ? 'display: show;' : 'display: none;'}`)
     });
-    
+
 };
 
-const postAppendLatLng = function(lat, lng) {
+const postAppendLatLng = function (lat, lng) {
     $("#form-latitude").val(lat.toString())
     $("#form-longitude").val(lng.toString())
 };
 // on submit button click create object, clear form, add obj to dataObj, etc...
-const submitButtonClicked = function(){
-    let d = new Date();//Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
+const submitButtonClicked = function () {
+    let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
     var curr_date = d.getDate();
     var curr_month = d.getMonth();
     var curr_year = d.getFullYear();
@@ -249,7 +288,7 @@ const submitButtonClicked = function(){
         user: userData.pushkey1,
     };
 
-    const createPushkey = function(str = '') {
+    const createPushkey = function (str = '') {
         for (let i = 0; i < 16; i++) {
             let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789';
             let randomIdx = Math.floor(Math.random() * 61);
@@ -260,17 +299,20 @@ const submitButtonClicked = function(){
     //real database:
     console.log("push this to firebase", dataObj);
     threadData[createPushkey()] = dataObj;
-    
+
     //on completion:
     displayFormToggle(false);
-    let {heading, body, lat, lon, geohash} = dataObj;
+    let {
+        heading,
+        body,
+        lat,
+        lon,
+        geohash
+    } = dataObj;
     [heading, body, lat, lon, geohash].forEach(a => a = '');
     //fake database:
 };
 ////////// END CREATE THREAD FORM ///////////
-
-
-
 
 
 
@@ -284,7 +326,10 @@ const findAndSortThreadsNearby = function findsThreadsOnMapAndSortsByDistance(co
     let distances = [];
     // get distances from center of map
     for (let i = 0; i < keys.length; i++) {
-        let {lat,lon} = threadData[keys[i]];
+        let {
+            lat,
+            lon
+        } = threadData[keys[i]];
         let latlng2 = [lat, lon];
         distances.push([i, mymap.distance(latlng1, latlng2)]);
     };
@@ -296,7 +341,10 @@ const findAndSortThreadsNearby = function findsThreadsOnMapAndSortsByDistance(co
 
 //display changes to distance on each thread and in the lat-lon component
 const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
-    let {lat,lng} = latlng ? latlng : mymap.getCenter();
+    let {
+        lat,
+        lng
+    } = latlng ? latlng : mymap.getCenter();
     changeLatLon(lat, lng);
     findAndSortThreadsNearby([lat, lng]);
 }
