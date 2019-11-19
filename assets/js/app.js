@@ -20,11 +20,6 @@ $('#sign-in').on("click", function(){
 })
 
 
-////////// DATA OBJECTS ///////////
-// for ESRI
-
-//////////END DATA OBJECTS ///////////
-
 
 
 
