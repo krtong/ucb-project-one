@@ -74,7 +74,6 @@ const goToLocation = function() {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             //flies to location
-            // changeLatLon(lat, lon)
             mymap.flyTo([lat, lng], 13);
             renderCoords('', {lat,lng});
             //adds marker
@@ -100,6 +99,7 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
     let {lat,lng} = e.latlng;
     console.log([lat, lng]);
         postAppendLatLng(lat, lng)
+    changeLatLon(lat, lng);
         $("#form-geohash").val(encodeGeoHash([lat, lng]))
 };
 ////////// END WHAT TO DO ON MAP CLICK ///////////
@@ -192,7 +192,7 @@ const displayFormToggle = (test) => {
     let createThread = $("#create-thread");
     let cancelThread = $("#cancel-thread");
 
-    //values are meant to the the opposite of the current state
+    //values are meant to flip to the opposite of the current state
     [threadList, createThreadForm, createThread, cancelThread].forEach(a => {
         console.log(a.attr("toggle"))
         let toggle = a.attr("toggle") === 'off';
@@ -223,18 +223,25 @@ const submitButtonClicked = function(){
         heading: $("#form-title").val(),
         body: $("#editor-container").val(),
         user: userData.pushkey1,
-        
     };
-    let pushkey = '';
 
-    for (let i = 0; i < 16; i++) {
-        let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789'
-        let randomIdx = Math.floor(Math.random() * 61)
-        pushkey += randomStr[randomIdx];
-    }
-
-    threadData[pushkey] = dataObj;
+    const createPushkey = function(str = '') {
+        for (let i = 0; i < 16; i++) {
+            let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789'
+            let randomIdx = Math.floor(Math.random() * 61)
+            str += randomStr[randomIdx];
+        }
+        return str
+    } 
+    //real database:
+    console.log("push this to firebase", dataObj)
+    threadData[createPushkey()] = dataObj;
+    
+    //on completion:
     displayFormToggle(false)
+    let {heading, body, lat, lon, geohash} = dataObj;
+    [heading, body, lat, lon, geohash].forEach(a => a = '');
+    //fake database:
 }
 ////////// END CREATE THREAD FORM ///////////
 
