@@ -525,3 +525,4 @@ $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
 ////////// END EVENT LISTENERS ///////////
 
 
+//WHAT THE FUCK
