@@ -262,6 +262,10 @@ const createThreadBtnClick = function() {
     displayFormToggle()
 };
 
+const signupFormComplete = function () {
+    console.log('click')
+}
+
 const displayFormToggle = (test) => {
     let bool = state === 'thread list' ? true : false;
     if (test) bool = test;
@@ -491,4 +495,7 @@ $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
 $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
+$(document).on("click", "#signup-button", submitButtonClicked)
 ////////// END EVENT LISTENERS ///////////
+
+
