@@ -265,9 +265,17 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 ////////// END POPULATE THREAD LIST ///////////
 
 
+//signup form //
 
+//when signup in nav is clicked
+const signupButtonClicked = function () {
+    console.log('click')
+}
 
-
+//when submit button is clicked
+const signupSubmitButtonClicked = function () {
+    console.log('click')
+}
 
 
 
@@ -511,11 +519,9 @@ $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
 $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
-<<<<<<< HEAD
-////////// END EVENT LISTENERS ///////////
-=======
-$(document).on("click", "#signup-button", submitButtonClicked)
+$(document).on("click", "#signup-button", signupButtonClicked)
+$(document).on("click", "#signup-submit", signupSubmitButtonClicked)
+
 ////////// END EVENT LISTENERS ///////////
 
 
->>>>>>> d79ec2f80c81ffa0eba8347d7d084fb618a16a9f
