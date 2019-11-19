@@ -20,7 +20,6 @@ firebase.initializeApp(firebaseConfig);
 
 let database = firebase.database();
 
-
 //firebase authorization
 //can't figure out how to do this without NPM/Node
 
@@ -152,8 +151,8 @@ $("#layer-btns-go-here").html(function(){
     `);
     return html;
 })
-$(`#button2`).attr("class", `btn btn-${bRCG()} `)
 
+$(`#button2`).attr("class", `btn btn-${bRCG()} `)
 
 // on button click change layer values 
 const toggleLayer = function togglesBetweenMapLayers(event) {
@@ -266,9 +265,17 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 ////////// END POPULATE THREAD LIST ///////////
 
 
+//signup form //
 
+//when signup in nav is clicked
+const signupButtonClicked = function () {
+    console.log('click')
+}
 
-
+//when submit button is clicked
+const signupSubmitButtonClicked = function () {
+    console.log('click')
+}
 
 
 
@@ -334,13 +341,13 @@ const submitButtonClicked = function(){
         let randomIdx = Math.floor(Math.random() * 61)
         pushkey += randomStr[randomIdx];
     }
-    console.log(pushkey)
-    console.log(dataObj)
 
     threadData[pushkey] = dataObj;
     displayFormToggle(false)
 }
 ////////// END CREATE THREAD FORM ///////////
+
+
 
 
 
@@ -512,7 +519,10 @@ $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
 $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
-$(document).on("click", "#signup-button", submitButtonClicked)
+$(document).on("click", "#signup-button", signupButtonClicked)
+$(document).on("click", "#signup-submit", signupSubmitButtonClicked)
+
 ////////// END EVENT LISTENERS ///////////
 
 
+//WHAT THE FUCK
