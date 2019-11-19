@@ -497,3 +497,5 @@ $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
 $(document).on("click", "#signup-button", submitButtonClicked)
 ////////// END EVENT LISTENERS ///////////
+
+
