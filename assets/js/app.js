@@ -163,21 +163,9 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
     let threadListHTML = '';
     threadArr.forEach((cur, idx) => {
         //easier letiables
-        const {
-            lat,
-            lon,
-            heading,
-            body,
-            dateCreated,
-            user
-        } = cur[0];
-        const {
-            userName,
-            images
-        } = user;
-        const {
-            thumb
-        } = images;
+        const {lat,lon,heading,body,dateCreated,user} = cur[0];
+        const {userName,images} = user;
+        const {thumb} = images;
         const distance = cur[1] * 3.28084; //converted from meters to  feet
         const distanceString = distance < 900 ? `${distance.toFixed(0)} feet` : distance < 1500 ? `${(distance/3).toFixed(0)} yards` : `${(distance*0.000189394).toFixed(1)} miles`
         const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)-1]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
