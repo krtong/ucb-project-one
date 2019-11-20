@@ -8,8 +8,83 @@ let currentMapLayerIdx = Math.random() > 0.5 ? 2 : 4;
 let currentMapLayer = Object.keys(mapLayers)[currentMapLayerIdx];
 let threadMarkerArray = [];
 let shouldMapKeepPanning = true;
+let isSignedIn = false;
+let userProfileObj = {};
 //10 spaces between sections
 ///////END GLOBAL VARIABLES/////////////////END GLOBAL VARIABLES/////////////////END GLOBAL VARIABLES//////////
+
+
+
+
+
+
+
+
+
+//////////FIRESTORE /////////////
+const db = firebase.firestore();
+const usersRef = db.collection('users');
+const postsRef = db.collection('posts');
+async function getPosts() {
+    // Data Structure
+    // Collection: public
+    //  Doc: write-your-first-query
+    //    Collection: star-wars-people
+    const db = firebase.firestore();
+
+    // See Firebase docs: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+
+    // Define collection
+    const collection = db.collection('posts');
+
+    // Get collection snapshot
+    const snapshot = await collection.get();
+
+    // Loop through snapshot.docs
+    return snapshot.docs.map(doc => ({
+        __id: doc.id,
+        ...doc.data()
+    }));
+}
+
+async function runQuery() {
+    const people = await getPosts();
+    console.table(people)
+}
+
+runQuery();
+//////// END FIRESTORE ////////////
+
+
+
+
+
+
+
+
+
+///////// FIREBASE AUTH //////////
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // User is signed in.
+        isSignedIn = true;
+        console.log(user)
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
+        // ...
+    } else {
+        isSignedIn = false;
+        console.log('user not logged in')
+        // User is signed out.
+        // ...
+    }
+});
+///////// END FIREBASE AUTH /////
 
 
 
@@ -30,7 +105,7 @@ const rdmLatLon = function randomLatitudeAndLongitudeArray() {
 
 //initial layer shown on pageload
 // useless but funny button color creator
-const bRCG = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
+const bRCG = randomColorGenerator = () => 'primary success danger warning info light'.split(' ')[Math.floor(Math.random() * 5)];
 
 // set initial values for map layers
 const addNewMapLayer = (layerKey = currentMapLayer) => {
@@ -43,16 +118,14 @@ const addNewMapLayer = (layerKey = currentMapLayer) => {
     currentMapLayerIdx = Object.keys(mapLayers).indexOf(layerKey)
     //add the new layer to the map.
     mapLayers[layerKey].addTo(mymap)
-    // every time there's a layer change you need to invoke L.terminator to bring back the day/night overlay.
-    L.terminator().addTo(mymap);
     //create string of html for the buttons.
-    let mapBtnHTML = `<button type="button" class="btn btn-secondary disabled">${mapLayers[currentMapLayer].attribution}</button>`
+    let mapBtnHTML = `<button type="button" class="btn btn-secondary disabled" style="width: 200px;">${currentMapLayer}</button>`;
     Object.keys(mapLayers).forEach((a, i) => mapBtnHTML += `<button id="button${i+1}" type="button" class="btn btn-${i === currentMapLayerIdx ? bRCG() : 'secondary'} map-btn" number="${i+1}">${i+1}</button>`);
-    $("#layer-btns-go-here").html(mapBtnHTML)
+    $("#layer-btns-go-here").html(mapBtnHTML);
 };
 
 
-// toggle between map layers. on map button click change layer values 
+// toggle between map layers. on map button click change layer values  
 const toggleLayer = function togglesBetweenMapLayers() {
     const btnNumber = parseInt($(this).attr("number")) - 1;
     const newMapLayer = Object.keys(mapLayers)[btnNumber];
@@ -88,7 +161,10 @@ const goToLocation = function () {
             //flies to location
             mymap.flyTo([lat, lng], 13);
             addNewMapLayer('googleHybrid')
-            renderCoords(null, {lat,lng});
+            coordProgression(null, {
+                lat,
+                lng
+            });
 
             //adds marker
             let marker = L.marker([lat, lng]).addTo(mymap);
@@ -111,8 +187,11 @@ const goToLocation = function () {
 //create popup on map click
 const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
-    const {lat,lng} = e.latlng;
-    
+    const {
+        lat,
+        lng
+    } = e.latlng;
+
     //change latlon on the subnav bar and in the create thread form.
     postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
@@ -120,8 +199,8 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
     //remove popup after 3 seconds
     setTimeout(function () {
         popup.remove()
-    }, 3000)
-    
+    }, 3000);
+
     $("#form-geohash").val(encodeGeoHash([lat, lng]));
     //show popup
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
@@ -137,24 +216,28 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
 
 
 ////////// POPULATE THREAD LIST ///////////////////// POPULATE THREAD LIST ///////////////////// POPULATE THREAD LIST ///////////
-//This is such a weird separation of concerns. It hurts my head trying to understand why I do things sometimes. render Coords does it all. 
-//given a location, sort the threads in an array by distance
-const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
-    const {lat,lng} = latlng ? latlng : mymap.getCenter();
-    const latlng1 = [lat, lng]
+
+//when the coordinates on the map viewport change, everything associated with said-coordinates need to change too.
+const coordProgression = function updateAllCoorsOnDocument(e, latlng) {
+    //lat & lng = either the provided latlng OR the center of the viewport
+    const {
+        lat,
+        lng
+    } = latlng ? latlng : mymap.getCenter();
     const keys = Object.keys(threadData);
-    let distances = [];
+    const latlng1 = [lat, lng];
+    let tsbdArr = threadsSortedByDistancesArr = [];
     shouldMapKeepPanning = false;
-    // get distances from center of map
+    // get threadsSortedByDistancesArr from center of map
     for (let i = 0; i < keys.length; i++) {
-        const {lat,lon} = threadData[keys[i]];
-        const latlng2 = [lat, lon];
-        distances.push([i, mymap.distance(latlng1, latlng2)]);
+        const latlng2 = threadData[keys[i]];
+        tsbdArr.push([i, mymap.distance(latlng1, latlng2)]);
     };
     // sort threads by distances
-    distances.sort((a, b) => a[1] > b[1] ? 1 : -1).forEach((a, i) => distances[i][0] = threadData[keys[a[0]]]);
-    //add threadObjects to distance array and send both the distances and the threadObjects to the thread-populate function.
-    populateThreads(distances)
+    tsbdArr.sort((a, b) => a[1] > b[1] ? 1 : -1).forEach((a, i) => tsbdArr[i][0] = threadData[keys[a[0]]]);
+    //once coords are updated:
+    //update thread rankings by distance
+    populateThreads(tsbdArr);
     changeLatLon(lat, lng);
 };
 
@@ -170,25 +253,37 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 
     threadArr.forEach((cur, idx) => {
         //a questionable amount of object destructuring for shorter naming of variables
-        const {lat,lon,heading,body,dateCreated,user} = cur[0];
-        const {userName,images} = user;
-        const {thumb} = images;
+        const {
+            lat,
+            lon,
+            heading,
+            body,
+            dateCreated,
+            user
+        } = cur[0];
+        const {
+            userName,
+            images
+        } = user;
+        const {
+            thumb
+        } = images;
         const distance = cur[1] * 3.28084; //converted from meters to  feet
         const distanceString = distance < 900 ? `${distance.toFixed(0)} feet` : distance < 1500 ? `${(distance/3).toFixed(0)} yards` : `${(distance*0.000189394).toFixed(1)} miles`
-        const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)-1]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
+        const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
         const blurb = body.length > 140 ? `${body.slice(0, 140)}...` : body;
         const colorFirstPost = idx === 0 ? 'active' : '';
         //we can change this html to whatever format you want.
         threadListHTML += `
-            <a href="#" class="list-group-item list-group-item-action ${colorFirstPost}">
+            <a href="#" class="list-group-item list-group-item-action ${ colorFirstPost }">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">${heading}</h5>
-                    <small>${fullDate}</small>
+                    <h5 class="mb-1">${ heading }</h5>
+                    <small>${ fullDate }</small>
                 </div>
-                <p class="mb-1">${blurb}</p>
+                <p class="mb-1">${ blurb }</p>
                 <small>
-                    By <img src="${thumb}" style="border-radius: 50%; margin: 0 3px 0 1px;" height="18px" width="18px">
-                    ${userName} | distance: ${distanceString} | 10 new replies
+                    By <img src="${ thumb }" style="border-radius: 50%; margin: 0 3px 0 1px;" height="18px" width="18px">
+                    ${ userName } | distance: ${ distanceString } | 10 new replies
                 </small>
             </a>`;
         //create new markers
@@ -208,15 +303,13 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 
 
 //////////USER SIGN UP////////////////////USER SIGN UP////////////////////USER SIGN UP//////////
+//toggle firebase
+
+
 //Stuff to push onto firebase
 $('#sign-in').on("click", function () {
-    event.preventDefault();
 
-    const name = $("#email-input").val().trim();
-    const password = $('#password-input').val().trim();
-
-    database.ref("/users").push({name,password});
-    console.log({name,password});
+    
 })
 
 //when signup in nav is clicked
@@ -248,26 +341,33 @@ const createThreadBtnClick = function () {
 const signupFormComplete = function () {
     console.log('click');
 }
-
+// create thread button clicked. cancel thread button clicked. 
 const displayFormToggle = (test) => {
-    let bool = state === 'thread list' ? true : false;
-    if (test) bool = test;
-    state = bool ? 'create thread' : 'thread list';
-    console.log(state);
+    // if user is not signed in...
+    if (!isSignedIn) {
 
-    //bool === true if threads are showing and list is hidden
-    let threadList = $("#thread-list");
-    let createThreadForm = $("#create-thread-form");
-    let createThread = $("#create-thread");
-    let cancelThread = $("#cancel-thread");
 
-    //values are meant to flip to the opposite of the current state
-    [threadList, createThreadForm, createThread, cancelThread].forEach(a => {
-        console.log(a.attr("toggle"));
-        let toggle = a.attr("toggle") === 'off';
-        a.attr("toggle", `${toggle ? 'on' : 'off'}`)
-        a.attr("style", `${toggle ? 'display: show;' : 'display: none;'}`)
-    });
+    //if user is signed in...
+    } else {
+        let bool = state === 'thread list' ? true : false;
+        if (test) bool = test;
+        state = bool ? 'create thread' : 'thread list';
+        console.log(state);
+
+        //bool === true if threads are showing and list is hidden
+        let threadList = $("#thread-list");
+        let createThreadForm = $("#create-thread-form");
+        let createThread = $("#create-thread");
+        let cancelThread = $("#cancel-thread");
+
+        //values are meant to flip to the opposite of the current state
+        [threadList, createThreadForm, createThread, cancelThread].forEach(a => {
+            console.log(a.attr("toggle"));
+            let toggle = a.attr("toggle") === 'off';
+            a.attr("toggle", `${toggle ? 'on' : 'off'}`)
+            a.attr("style", `${toggle ? 'display: show;' : 'display: none;'}`)
+        });
+    };
 
 };
 
@@ -286,18 +386,18 @@ const createPushkey = function createAFakePushkey(str = '') {
     return str
 };
 
-// on thread submit button click create object, clear form, add obj to dataObj, etc...
+// thread form submit: on thread submit button click create object, clear form, add obj to dataObj, etc...
 const threadSubmitButtonClicked = function () {
 
-    
+
     //create timestamp
     let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
-    const curr_date = d.getDate();
-    const curr_month = d.getMonth();
-    const curr_year = d.getFullYear();
-    let dateCreated = curr_date + "-" + curr_month + "-" + curr_year;
-
-    //create data object
+    const day = d.getDate();
+    const month = d.getMonth(); //january = 0
+    const year = d.getFullYear();
+    let dateCreated = `${year}-${month}-${day}`
+    console.log("d", d, "datecreated", dateCreated)
+    let formInputs = [$("#form-latitude"), $("#form-longitude"), $("#form-geohash"), $("#form-title"), $("#editor-container")]
     let dataObj = {
         dateCreated,
         lat: $("#form-latitude").val(),
@@ -308,23 +408,31 @@ const threadSubmitButtonClicked = function () {
         user: userData.pushkey1,
     };
 
-    const isFormCompleted = function() {
-        const {lat, lon, geohash, heading, body, user} = dataObj;
-        return [lat, lon, geohash, heading, body, user].reduce((acc, cur) => cur.length > 10 ? acc : false, true);
+    const checkForm = function () {
+        let isComplete = formInputs.map(a => a.val().toString().length > 10 ? true : false);
+        isComplete.forEach((a, i) => formInputs[i].toggleClass('is-valid', a).toggleClass('is-invalid', !a))
+        console.log('isComplete', isComplete);
+        return isComplete.reduce((acc, cur) => cur ? acc : false, true);
     }
-    console.log(isFormCompleted())
+    console.log('is everything good ?', checkForm())
     //real database:
     console.log("push this to firebase", dataObj);
     //on completion:
-    displayFormToggle(false);
-    $("#form-latitude").val('');
-    $("#form-longitude").val('');
-    $("#form-geohash").val('');
-    $("#form-title").val('');
-    $("#editor-container").val('');
-    renderCoords()
-    //fake database:
-    threadData[createPushkey()] = dataObj;
+    if (checkForm()) {
+        displayFormToggle(false);
+        $("#form-latitude").val('');
+        $("#form-longitude").val('');
+        $("#form-geohash").val('');
+        $("#form-title").val('');
+        $("#editor-container").val('');
+        $('#submit-button').toggleClass('btn-primary').toggleClass('btn-success').append()
+        $("#submit-button").append('')
+        coordProgression()
+        //fake database:
+        threadData[createPushkey()] = dataObj;
+        //real database: 
+        postsRef.add(dataObj)
+    }
 };
 ////////// END CREATE THREAD FORM ///////////////////// END CREATE THREAD FORM ///////////////////// END CREATE THREAD FORM ///////////
 
@@ -342,6 +450,8 @@ const threadSubmitButtonClicked = function () {
 mymap.setView(rdmLatLon(), 12);
 //set starting mapLayer for viewport
 addNewMapLayer();
+//add day/night
+L.terminator().addTo(mymap);
 //idfk why this is here but it changes the "Create Thread" button to color "primary"
 $("#create-thread").attr("class", "btn btn-primary")
 //ask user if they want to go to their location. the way the app is designed right now, they HAVE TO go to location for the app to work properly
@@ -358,7 +468,7 @@ goToLocation()
 
 ////////// EVENT LISTENERS ///////////////////// EVENT LISTENERS ///////////////////// EVENT LISTENERS ///////////
 //initialize event handlers
-mymap.on('drag', renderCoords);
+mymap.on('drag', coordProgression);
 mymap.on('click', onMapClick);
 $(document).on("click", ".map-btn", toggleLayer)
 $(document).on("click", "#create-thread", displayFormToggle)
