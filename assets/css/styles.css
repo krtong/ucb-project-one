@@ -46,3 +46,13 @@ html, body {
 #password-input{
     margin-right:10px;
 }
+
+footer{
+    background-color:black;
+    margin-top:20px;
+}
+
+.container-carousel{
+    height:70%;
+    width:70%;
+}

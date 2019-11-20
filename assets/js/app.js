@@ -3,23 +3,22 @@ let state = 'thread list';
 console.log(state);
 
 //Stuff to push onto firebase
-$('#sign-in').on("click", function () {
-    event.preventDefault();
+// $('#sign-in').on("click", function () {
+//     event.preventDefault();
 
-    var name = $("#username-input").val().trim();
-    var password = $('#password-input').val().trim();
+//     var name = $("#username-input").val().trim();
+//     var password = $('#password-input').val().trim();
 
-    database.ref("/users").push({
-        name,
-        password,
+//     database.ref("/users").push({
+//         name,
+//         password,
 
-    });
-    console.log({
-        name,
-        password
-    });
-})
-
+//     });
+//     console.log({
+//         name,
+//         password
+//     });
+// })
 
 ////////// INITIALIZE PAGE ///////////
 
@@ -208,10 +207,24 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
     });
     //append html to threadlist
     $('#thread-list').html(threadListHTML);
+    
 };
 ////////// END POPULATE THREAD LIST ///////////
 
+/////////User Sign In //////////
+const signInButtonClicked = function (){
+    console.log('click');
+    event.preventDefault();
 
+    var username = $("#username-input").val().trim();
+    var password = $('#password-input').val().trim();
+
+    database.ref("/users").push({
+        username,
+        password,
+    });
+    
+}
 
 //////////USER SIGN UP//////////
 
@@ -287,7 +300,21 @@ const submitButtonClicked = function () {
         body: $("#editor-container").val(),
         user: userData.pushkey1,
     };
+    ///push to fire base////
+    // database.ref("/thread").push({
+    //     dataObj:dateCreated,
+    //     dataObj:$("#form-latitude").val(),
+    //     dataObj:lon,
+    //     dataObj:geohash,
+    //     dataObj:heading,
+    //     dataObj:body,
+    //     dataObj:user.userData,
 
+    // })
+    console.log(dataObj.dateCreated)
+    console.log(dataObj.lat)
+    console.log(dataObj.lon)
+    console.log(dataObj.geohash)
     const createPushkey = function (str = '') {
         for (let i = 0; i < 16; i++) {
             let randomStr = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ123456789';
@@ -299,7 +326,7 @@ const submitButtonClicked = function () {
     //real database:
     console.log("push this to firebase", dataObj);
     threadData[createPushkey()] = dataObj;
-
+    
     //on completion:
     displayFormToggle(false);
     let {
@@ -364,5 +391,8 @@ $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
 $(document).on("click", "#signup-button", signupButtonClicked)
 $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
+$(document).on("click", "#sign-in",signInButtonClicked)
 
 ////////// END EVENT LISTENERS ///////////
+
+

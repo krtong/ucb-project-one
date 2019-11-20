@@ -8,10 +8,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
-
+  
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin=""/>
+    
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,43 +34,30 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="profile.html">Profile<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
               </ul>
               <div class="form-inline my-2 my-lg-0">
-                    <input type="email" placeholder="Email" id="email-input" class="form-control">
-                    <input type="password" placeholder="Password" id="password-input" class="form-control">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+                  <a href="index.html" class="btn btn-outline-success my-2 my-sm-0">sign out</a>
+                
               </div>
             </div>
+            
           </nav>
         
 <div class="container" id="bio-card">
     <div class="row">
         <div class="col-lg-4">
           <div class="card" style="width: 18rem;">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            <img src="assets/images/placeholder.png" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title" id="name">Name:</h5>
-              <p class="card-text" id="bio">Bio:</p>
+              <h5 class="card-title" id="name">Username: Kevin Tong</h5>
+              <p class="card-text" id="bio">Bio:
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. At officiis fugit repudiandae fuga adipisci soluta porro incidunt ad vitae hic odio suscipit, placeat ipsam omnis saepe nam doloremque est. Est.
+              </p>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item" id="post-count">Posts:</li>
-              <li class="list-group-item" id= "last-log-in">Last log in:</li>
-              <li class="list-group-item" id="supporter-count">Supporters:</li>
+              <li class="list-group-item" id="post-count">Posts: 50</li>
+              <li class="list-group-item" id= "last-log-in">Last log in: 3 days ago</li>
+              
             </ul>
             <div class="card-body">
               <a href="#" class="card-link"><img src="assets/images/Twitter.png" height="40px" width="40px" alt="twitter"></a>
@@ -78,8 +66,58 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-8">
+          <div class="container-carousel">
+            <div class="sale-container">
+            <h1>For Sale:</h1>
+            </div>
+            <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" data-interval="5000" id="sandwich">
+                    <img src="assets/images/popeye.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Popeyes Chicken Sandwich: $1000</h5>
+                        
+                      </div>
+                  </div>
+                  <div class="carousel-item" data-interval="5000" id="sofa">
+                    <img src="assets/images/sofa.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Sofa: $500</h5>
+                        
+                      </div>
+                  </div>
+                  <div class="carousel-item" data-interval="5000" id="onewheel">
+                    <img src="assets/images/onewheel.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Onewheel: $150</h5>
+                        
+                      </div>
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="personal-threads">
+
+        </div>
+      </div>
     </div>
 </div>
+
+
+
     <!-- leaflet : map rendering -->
  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
  <script src="https://unpkg.com/leaflet"></script>
@@ -107,6 +145,9 @@
 
  <!-- weather underground -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+ <!--Materialize-->
+ 
 
  <!-- quill: rich text editor & dependencies-->
  <script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
