@@ -1,9 +1,4 @@
-mapLink = '<a href="http://www.esri.com/">Esri</a>';
-wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-// let weatherOpen = `a448b20824`+`a829df46169`+`895466e5e13`
-
-
-let mapLayers = {
+const mapLayers = {
     googleStreets: L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         attribution: `Google Streets`,
         maxZoom: 20,
