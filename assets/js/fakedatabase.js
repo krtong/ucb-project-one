@@ -19,7 +19,7 @@ wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR
 // let weatherOpen = `a448b20824`+`a829df46169`+`895466e5e13`
 
 //the jibberish is meant to represent pushkeys
-let threadData = {
+let geoPostData = {
     dwlkjdKNDknddskdn: {
         geohash:'',
         lat: 37.898968718507604,
