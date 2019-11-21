@@ -321,7 +321,7 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
         //a questionable amount of object destructuring for shorter naming of variables
         const {body, dateCreated, distance, geohash, heading, lat, lon, user,  __id} = cur;
         const thumb = userData[user]['images']['thumb'];
-        const userName = userData[user]['userName'];
+        const userName =  userData[user]['userName'];
         const distanceString = distance < 900 ? `${distance.toFixed(0)} feet` : distance < 1500 ? `${(distance/3).toFixed(0)} yards` : `${(distance*0.000189394).toFixed(1)} miles`
         const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
         const blurb = body.length > 140 ? `${body.slice(0, 140)}...` : body;
@@ -473,6 +473,11 @@ const openComponent = function (divId) {
                 toggleDisplay("geoPost-list");
             };
         };
+        case ("find-my-location") : {
+            $("#togglepulse").removeClass("pulse");
+            toggleDisplay("geoPost-list", "none");
+            toggleDisplay("geoPost-list");
+        }
     };
 };
 
@@ -511,7 +516,7 @@ L.terminator().addTo(mymap);
 //idfk why this is here but it changes the "Create geoPost" button to color "primary"
 $("#create-geoPost").attr("class", "btn btn-primary")
 //ask user if they want to go to their location. the way the app is designed right now, they HAVE TO go to location for the app to work properly
-goToLocation()
+
 // openComponent("create-geoPost");
 ////////// END INITIALIZATION //////////////////// END INITIALIZATION //////////////////// END INITIALIZATION ///////////
 
@@ -528,7 +533,7 @@ goToLocation()
 mymap.on('drag', coordProgression);
 mymap.on('click', onMapClick);
 $(document).on("click", ".map-btn", toggleLayer)
-$(document).on("click", "#form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
+$(document).on("click", "#find-my-location, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
     openComponent($(this).attr("id"))
 });
 $(document).on("click", "#find-my-location", goToLocation)
