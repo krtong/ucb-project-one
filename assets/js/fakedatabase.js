@@ -1,11 +1,20 @@
 // Fake data until we get firebase working... 
 let userData = {
-    pushkey1: {
+    'XgObqA5Lw1fPZ1iRSSto5b0dBZy2' : {
         userName: 'Kevin Tong',
         hashedpw: 'password',
         images: {
             thumb: 'https://www.fillmurray.com/64/64',
             full: 'https://www.fillmurray.com/400/400'
+        }
+    },
+    '1VJ6VLoyzXNZLxE6lYc60qg6Ip23' : {
+        userName: 'Joe Dirt',
+        email: 'spammytrashtrash@gmail.com',
+        hashedpw: 'password',
+        images: {
+            thumb: 'http://thetvpage.com/wp-content/uploads/2015/01/mullet.jpg',
+            full: 'http://thetvpage.com/wp-content/uploads/2015/01/mullet.jpg'
         }
     }
 }
