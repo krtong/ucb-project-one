@@ -50,10 +50,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <!-- <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <!-- <a class="nav-link" href="#">Link</a> -->
         </li>
 
         <!-- <li class="nav-item dropdown">
@@ -69,7 +69,7 @@
             </div>
           </li> -->
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Work in progress...</a>
         </li>
       </ul>
       <div class="form-inline my-2 my-lg-0">
@@ -120,7 +120,7 @@
   <!-- go to location -->
   <div class="col">
       <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="button" class="btn btn-secondary disabled" ><i class="fas fa-map-marked-alt"></i>
+          <button id="togglepulse"type="button" class="btn btn-secondary pulse" ><i class="fas fa-map-marked-alt"></i>
 
           </button>
       </div>
@@ -140,7 +140,7 @@
               style="display: none;">
               sign in
             </button>
-
+          
 
             <!-- create geoPost button -->
             <button type="button" id="create-geoPost" class="btn btn-secondary" toggle="on" style="display: ; width: 150px;">
@@ -185,18 +185,21 @@
                 autofocus>
               <label for="inputEmail">Email address</label>
             </div>
-
+            
             <div class="form-label-group">
               <input type="password" id="signinInputPassword" class="form-control" placeholder="Password" required>
               <label id="signinInputPassword"  for="inputPassword">Password</label>
             </div>
-
+            
             <div class="checkbox mb-3">
               <label>
                 <input type="checkbox" value="remember-me"> Remember me
+                <!-- <div id="valid-signin-message" class="success-feedback" >success code goes here</div> -->
               </label>
             </div>
             <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div id="signin-message" class="text-monospace"></div>
+            
             <div class="space"></div>
           </div>
         </div>
@@ -229,13 +232,19 @@
             </div>
 
             <div class="form-label-group">
+                <input type="username" id="signupInputUserName" class="form-control" placeholder="Email address" required
+                  autofocus>
+                <label for="inputEmail">Username</label>
+              </div>
+
+            <div class="form-label-group">
               <input type="password" id="signupInputPassword" class="form-control" placeholder="Password" required>
               <label for="inputPassword">Password</label>
             </div>
 
 
             <div class="form-label-group">
-              <input type="password" id="signupInputPasswordConfirm" class="form-control" placeholder="Password"
+              <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="Password"
                 required>
               <label for="inputPassword">Confirm Password</label>
             </div>
@@ -246,7 +255,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
-            <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button id="sign-up-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <div class="space"></div>
           </div>
         </div>
@@ -329,7 +338,7 @@
 
           <!-- submit button -->
           <div class="col-auto">
-            <button id="ssubmit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
+            <button id="form-submit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
           </div>
 
           <!-- endform -->

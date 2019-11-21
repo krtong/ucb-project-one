@@ -3,17 +3,19 @@
 const mymap = L.map('mapid');
 //most/all of these functions are really only used in one function. searchbar is your frand.
 // states are either 'geoPost list', 'create geoPost', 'signin form'
-let state;
 let currentMapLayerIdx = Math.random() > 0.5 ? 2 : 4;
 let currentMapLayer = Object.keys(mapLayers)[currentMapLayerIdx];
 let geoPostMarkerArray = [];
 let shouldMapKeepPanning = true;
 let isSignedIn = false;
 let userProfileObj = {};
+let localThreadArr = []
 let mapLayerState = '';
+let afterSignInState = null;
+let goWhereAfterSigningIn = "geoPost-list";
+let threadFormComplete = false;
 //10 spaces between sections
 ///////END GLOBAL VARIABLES/////////////////END GLOBAL VARIABLES/////////////////END GLOBAL VARIABLES/////
-
 
 
 
@@ -37,6 +39,7 @@ async function getPosts() {
 
     // Define collection
     const collection = db.collection('posts');
+    // const users = db.collection('users');
 
     // Get collection snapshot
     const snapshot = await collection.get();
@@ -46,14 +49,16 @@ async function getPosts() {
         __id: doc.id,
         ...doc.data()
     }));
-}
+};
 
 async function runQuery() {
-    const people = await getPosts();
-    console.table(people)
-}
+    const posts = await getPosts();
+    console.table("psots", posts)
+    localThreadArr = posts;
+};
 
 runQuery();
+console.log(localThreadArr)
 //////////////// END FIRESTORE ///////////////////// END FIRESTORE ///////////////////// END FIRESTORE /////
 
 
@@ -65,21 +70,41 @@ runQuery();
 
 
 ////////////////// FIREBASE AUTHENTICATE///////////////// FIREBASE AUTHENTICATE///////////////// FIREBASE AUTHENTICATE /////
-const isSignedInOrOut = function() {
+const isSignedInOrOut = function () {
     if (isSignedIn) {
         $("#navbar-signin-btn").css("display", "none");
         $("#navbar-log-out-btn").css("display", "");
-    };
+    } else {
+        $("#navbar-signin-btn").css("display", "");
+        $("#navbar-log-out-btn").css("display", "none");
+    }
 };
 
 firebase.auth().onAuthStateChanged(function (user) {
-    if (user) { 
+    if (user) {
         // User is signed in.
         isSignedIn = true;
-        const {displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData} = user
-        userProfileObj = {displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData}
-        changeState('geoPost-list')
-        console.log(displayName,   'logged in')
+        const {
+            displayName,
+            email,
+            emailVerified,
+            photoURL,
+            isAnonymous,
+            uid,
+            providerData
+        } = user;
+        userProfileObj = {
+            displayName,
+            email,
+            emailVerified,
+            photoURL,
+            isAnonymous,
+            uid,
+            providerData
+        };
+        openComponent('geoPost-list');
+        console.log(displayName, 'logged in')
+        console.log(userProfileObj)
     } else {
         isSignedIn = false;
         console.log('user not logged in')
@@ -96,14 +121,17 @@ const emailSignIn = function signInWithEmail(email, password) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ...
-        console.log("error", error)
-        if (errorCode === "auth/wrong-password") {
-
-        }
-        if (errorCode === "auth/user-not-found") {
-
-        }
+        console.log(errorMessage)
+        // console.log("error", error);
+        $("#sign-in-submit-btn").addClass("btn-danger")
+        $("#signin-message").addClass("text-danger")
+        $("#signin-message").text(errorMessage);
+        setTimeout(function () {
+            $("#sign-in-submit-btn").removeClass("btn-danger");
+            $("#sign-in-submit-btn").addClass("btn-primary")
+            $("#signin-message").removeClass("text-danger");
+            $("#signin-message").text('');
+        }, 5000)
     });
 };
 
@@ -114,17 +142,19 @@ const emailSignUp = function signUpWithEmail(email, password) {
         var errorMessage = error.message;
         // ...
     });
-}
+};
+``
 
 const logOut = function () {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(function () {
         isSignedIn = true;
         console.log("log out successful")
-      }, function(error) {
+    }, function (error) {
         // An error happened.
         console.log("log out failed", error)
-      });
-}
+    });
+    isSignedInOrOut()
+};
 
 
 
@@ -247,7 +277,7 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
     setTimeout(function () {
         popup.remove()
     }, 3000);
-
+    coordProgression()
     $("#form-geohash").val(encodeGeoHash([lat, lng]));
     //show popup
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
@@ -264,30 +294,18 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
 ////////// POPULATE geoPost LIST ///////////////////// POPULATE geoPost LIST ///////////////////// POPULATE geoPost LIST ///////////
 //when the coordinates on the map viewport change, everything associated with said-coordinates need to change too.
 const coordProgression = function updateAllCoorsOnDocument(e, latlng) {
-    //lat & lng = either the provided latlng OR the center of the viewport
-    const {
-        lat,
-        lng
-    } = latlng ? latlng : mymap.getCenter();
-    const keys = Object.keys(geoPostData);
-    const latlng1 = [lat, lng];
-    let tsbdArr = geoPostsSortedByDistancesArr = [];
     shouldMapKeepPanning = false;
-    // get geoPostsSortedByDistancesArr from center of map
-    for (let i = 0; i < keys.length; i++) {
-        const latlng2 = geoPostData[keys[i]];
-        tsbdArr.push([i, mymap.distance(latlng1, latlng2)]);
-    };
-    // sort geoPosts by distances
-    tsbdArr.sort((a, b) => a[1] > b[1] ? 1 : -1).forEach((a, i) => tsbdArr[i][0] = geoPostData[keys[a[0]]]);
-    //once coords are updated:
-    //update geoPost rankings by distance
-    populategeoPosts(tsbdArr);
+    //lat & lng = either the provided latlng OR the center of the viewport
+    const {lat,lng} = latlng ? latlng : mymap.getCenter();
+    localThreadArr.forEach(a => a['distance'] = mymap.distance([lat,lng], [a.lat, a.lon]) * 3.28084)
+    localThreadArr.sort((a, b) => a.distance > b.distance ? 1 : -1);
+    populategeoPosts(localThreadArr);
     changeLatLon(lat, lng);
 };
 
 //once render coords has sorted the geoPosts into an array
 const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPostArr) {
+    console.log(geoPostArr)
     let geoPostListHTML = `<div class="card">
     <div class="form-label card-header background-color-secondary"><i class="fas fa-map-marked-alt"></i>  
     geoPosts sorted by distance </div>`; //create html to place into $("#geoPost-list").
@@ -299,30 +317,20 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
     };
 
     geoPostArr.forEach((cur, idx) => {
+        console.log("cur", cur)
         //a questionable amount of object destructuring for shorter naming of variables
-        const {
-            lat,
-            lon,
-            heading,
-            body,
-            dateCreated,
-            user
-        } = cur[0];
-        const {
-            userName,
-            images
-        } = user;
-        const {
-            thumb
-        } = images;
-        const distance = cur[1] * 3.28084; //converted from meters to  feet
+        const {body, dateCreated, distance, geohash, heading, lat, lon, user,  __id} = cur;
+        const thumb = userData[user]['images']['thumb'];
+        const userName =  userData[user]['userName'];
         const distanceString = distance < 900 ? `${distance.toFixed(0)} feet` : distance < 1500 ? `${(distance/3).toFixed(0)} yards` : `${(distance*0.000189394).toFixed(1)} miles`
         const fullDate = ((date = dateCreated) => `${['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'][date.slice(5, 7)]} ${parseInt(date.slice(8, 10))}, ${date.slice(0, 4)}`)();
         const blurb = body.length > 140 ? `${body.slice(0, 140)}...` : body;
         const colorFirstPost = idx === 0 ? 'active' : '';
+
+
         //we can change this html to whatever format you want.
         geoPostListHTML += `
-            <a href="#" class="list-group-item list-group-item-action ${ colorFirstPost }">
+            <a href="#" class="list-group-item list-group-item-action ${ colorFirstPost }" geohash="${geohash}">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">${ heading }</h5>
                     <small>${ fullDate }</small>
@@ -370,106 +378,107 @@ const signupSubmitButtonClicked = function () {
 
 
 
-//////////USER SIGN IN////////////////////USER SIGN IN////////////////////USER SIGN IN//////////
-//when signup in nav is clicked
-const signinButtonClicked = function (e) {
-    changeState('signin form')
-};
-
-//when submit button is clicked : submit email and password
-const signinSubmitButtonClicked = function () {
-    event.preventDefault();
-    
-    let email = $("#signinInputEmail").val().trim()
-    let password = $("#signinInputPassword").val().trim()
-    emailSignIn(email, password)
-};
-//////////END USER SIGN IN////////////////END USER SIGN IN////////////////END USER SIGN IN////////
-
-
-
-
-
-
-
-
-
 ////////// CREATE geoPost FORM ///////////////////// CREATE geoPost FORM ///////////////////// CREATE geoPost FORM ///////////
-const creategeoPostBtnClick = function () {
-    $("#right-btn").html(`<button type="button" id="cancel-geoPost" class="btn btn-secondary map-btn">cancel geoPost</button>`);
-    $("#cancel-geoPost").attr("class", `btn btn-warning map-btn`);
-    displayFormToggle();
-};
+// const creategeoPostBtnClick = function () {
+//     $("#right-btn").html(`<button type="button" id="cancel-geoPost" class="btn btn-secondary map-btn">cancel geoPost</button>`);
+//     $("#cancel-geoPost").attr("class", `btn btn-warning map-btn`);
+// };
 
 const signupFormComplete = function () {
     console.log('click');
 };
 
 
-//search keywords: ((change state, state change, changestate, statechange))
+//search keywords: ((change state, state change, openComponent, statechange))
 //NEW: toggle between map layers. on map button click change layer values  
-const changeState = function (newState = state) {
-    if (newState === "cancel-geoPost") newState = "geoPost-list";
-    console.log(isSignedIn, newState)
-    let oldState = state;
-    state = newState;
-    const html = {
-        'geoPost-list': {
-            div: $("#geoPost-list"),
-            button: $("#cancel-geoPost"),
-        },
-        'create-geoPost': {
-            'div': $("#create-geoPost-form"),
-            'button': $("#create-geoPost"),
-        },
-        'navbar-signin-btn': {
-            div: $("#signin-form"),
-            button: $("#navbar-signin-btn"),
-        },
+const toggleDisplay = (id, value = "") => $(`#${id}`).css("display", value);
+
+const openComponent = function (divId) {
+    event.preventDefault();
+    const components = ["geoPost-list", "create-geoPost-form", "signin-form"];
+    const buttons = ["create-geoPost", "navbar-signin-btn"]
+
+    //close old components
+    components.forEach(id => toggleDisplay(id, "none"));
+
+    //open new component
+    switch (divId) {
+        case "create-geoPost": {
+            goWhereAfterSigningIn = "create-geoPost";
+            if (isSignedIn) toggleDisplay("create-geoPost-form");
+            else toggleDisplay("signin-form");
+            toggleDisplay("create-geoPost", "none");
+            toggleDisplay("cancel-geoPost");
+            break;
+        };
+        case "cancel-geoPost": {
+            goWhereAfterSigningIn = "geoPost-list";
+            toggleDisplay("geoPost-list");
+            toggleDisplay("cancel-geoPost", "none");
+            toggleDisplay("create-geoPost");
+            break;
+        };
+        case "navbar-signin-btn": {
+            toggleDisplay("signin-form");
+            toggleDisplay("create-geoPost", "none");
+            toggleDisplay("cancel-geoPost");
+            break;
+        };
+        case "sign-in-submit-btn": {
+            let email = $("#signinInputEmail").val().trim()
+            let password = $("#signinInputPassword").val().trim()
+            emailSignIn(email, password)
+            if (isSignedIn) toggleDisplay(goWhereAfterSigningIn);
+            else toggleDisplay("signin-form");
+            break;
+        };
+        case "navbar-log-out-btn": {
+            logOut();
+        };
+        case "form-submit-btn": {
+            let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
+            const day = d.getDate();
+            const month = d.getMonth(); //january = 0
+            const year = d.getFullYear();
+            let dateCreated = `${year}-${month}-${day}`
+            let formInputs = [$("#form-latitude"), $("#form-longitude"), $("#form-geohash"), $("#form-title"), $("#editor-container")]
+            let dataObj = {
+                dateCreated,
+                lat: $("#form-latitude").val(),
+                lon: $("#form-longitude").val(),
+                geohash: $("#form-geohash").val(),
+                heading: $("#form-title").val(),
+                body: $("#editor-container").val(),
+                user: userProfileObj.uid,
+            };
+            const checkForm = function () {
+                let isComplete = formInputs.map(a => a.val().toString().length > 10 ? true : false);
+                isComplete.forEach((a, i) => formInputs[i].toggleClass('is-valid', a).toggleClass('is-invalid', !a))
+                return isComplete.reduce((acc, cur) => cur ? acc : false, true);
+            };
+            if (checkForm()) {
+                $("#form-latitude").val('');
+                $("#form-longitude").val('');
+                $("#form-geohash").val('');
+                $("#form-title").val('');
+                $("#editor-container").val('');
+                $('#submit-button').toggleClass('btn-primary').toggleClass('btn-success').append()
+                $("#submit-button").append('')
+                coordProgression()
+                //fake database:
+                geoPostData[createPushkey()] = dataObj;
+                //real database: 
+                postsRef.add(dataObj)
+                toggleDisplay("create-geoPost", "none");
+                toggleDisplay("geoPost-list");
+            };
+        };
+        case ("find-my-location") : {
+            $("#togglepulse").removeClass("pulse");
+            toggleDisplay("geoPost-list", "none");
+            toggleDisplay("geoPost-list");
+        }
     };
-
-    //inner function
-    const toggle = function innerFunctionToToggleBetweenDifferentDivs(state, div = 'div', display) {
-        display = display === 'hide' ? false : display === 'show' ? true : html[state][div].css("display") === "none";
-        html[state][div].css("display", display ? '' : 'none');
-    };
-
-    if (newState === "geoPost-list") {
-
-        oldState ? toggle(oldState) : null;
-        toggle(newState);
-    }
-
-    if (!isSignedIn && newState === "navbar-signin-btn") {
-        toggle(oldState);
-        toggle(newState);
-    }
-
-    if (newState === 'create-geoPost') {
-        toggle(oldState, 'button');
-        toggle(newState, 'button');
-        toggle(oldState);
-        toggle(newState);
-    }
-
-    if (!isSignedIn && newState === 'create-geoPost') {
-        toggle(oldState);
-        toggle(newState);
-    }
-    // if (!isSignedIn &&  newState === 'create geoPost'){
-    //     html[oldState].div.attr("style", "display: none;");
-    //     html['signin form']
-    // }
-    // html[oldState].div.attr("style", "display: none;");
-    // html[newState].div.attr("style", "display:;");
-
-    if (state === '#create-geoPost' || state === 'geoPost list') {
-        html[oldState].button.attr("style", "display: ; width: 150px;");
-        html[newState].button.attr("style", "display: none;");
-    };
-
-
-
 };
 
 
@@ -487,50 +496,6 @@ const createPushkey = function createAFakePushkey(str = '') {
     };
     return str
 };
-
-// geoPost form submit: on geoPost submit button click create object, clear form, add obj to dataObj, etc...
-const geoPostSubmitButtonClicked = function () {
-
-
-    //create timestamp
-    let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
-    const day = d.getDate();
-    const month = d.getMonth(); //january = 0
-    const year = d.getFullYear();
-    let dateCreated = `${year}-${month}-${day}`
-    let formInputs = [$("#form-latitude"), $("#form-longitude"), $("#form-geohash"), $("#form-title"), $("#editor-container")]
-    let dataObj = {
-        dateCreated,
-        lat: $("#form-latitude").val(),
-        lon: $("#form-longitude").val(),
-        geohash: $("#form-geohash").val(),
-        heading: $("#form-title").val(),
-        body: $("#editor-container").val(),
-        user: userData.pushkey1,
-    };
-
-    const checkForm = function () {
-        let isComplete = formInputs.map(a => a.val().toString().length > 10 ? true : false);
-        isComplete.forEach((a, i) => formInputs[i].toggleClass('is-valid', a).toggleClass('is-invalid', !a))
-        return isComplete.reduce((acc, cur) => cur ? acc : false, true);
-    }
-    if (checkForm()) {
-        displayFormToggle(false);
-        $("#form-latitude").val('');
-        $("#form-longitude").val('');
-        $("#form-geohash").val('');
-        $("#form-title").val('');
-        $("#editor-container").val('');
-        $('#submit-button').toggleClass('btn-primary').toggleClass('btn-success').append()
-        $("#submit-button").append('')
-        coordProgression()
-        //fake database:
-        geoPostData[createPushkey()] = dataObj;
-        //real database: 
-        postsRef.add(dataObj)
-    }
-};
-////////// END CREATE geoPost FORM ///////////////////// END CREATE geoPost FORM ///////////////////// END CREATE geoPost FORM ///////////
 
 
 
@@ -551,9 +516,8 @@ L.terminator().addTo(mymap);
 //idfk why this is here but it changes the "Create geoPost" button to color "primary"
 $("#create-geoPost").attr("class", "btn btn-primary")
 //ask user if they want to go to their location. the way the app is designed right now, they HAVE TO go to location for the app to work properly
-goToLocation()
 
-// changeState("create-geoPost");
+// openComponent("create-geoPost");
 ////////// END INITIALIZATION //////////////////// END INITIALIZATION //////////////////// END INITIALIZATION ///////////
 
 
@@ -569,14 +533,9 @@ goToLocation()
 mymap.on('drag', coordProgression);
 mymap.on('click', onMapClick);
 $(document).on("click", ".map-btn", toggleLayer)
-$(document).on("click", "#create-geoPost, #cancel-geoPost, #navbar-signin-btn", function (e) {
-    changeState($(this).attr("id"))
+$(document).on("click", "#find-my-location, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
+    openComponent($(this).attr("id"))
 });
-// $(document).on("click", "#cancel-geoPost", () => changeState('geoPost list'));
-// $(document).on("click", "#navbar-signin-btn", () => changeState('signin form'));
-
 $(document).on("click", "#find-my-location", goToLocation)
-$(document).on("click", "#sign-in-submit-btn", (signinSubmitButtonClicked));
-$(document).on("click", "#submit-btn", geoPostSubmitButtonClicked);
-$(document).on("click", "#navbar-log-out-btn", logOut)
+// $(document).on("click", "#navbar-log-out-btn", logOut)
 ////////// END EVENT LISTENERS ///////////////////// END EVENT LISTENERS ///////////////////// END EVENT LISTENERS ///////////
