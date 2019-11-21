@@ -23,36 +23,40 @@
   <!-- Firebase Auth UI -->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
-  
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+
   <!--------------------------------------END STYLE SHEETS ----------------------------------------------  -->
   <title>mapChat</title>
 </head>
+
 <body>
 
 
 
 
-  
+
   <!-------------------------------------- NAVBAR ----------------------------------------------  -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
 
-      <a class="navbar-brand" href="#">mapChat</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
+    <a class="navbar-brand" href="#">mapChat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-          <!-- <li class="nav-item dropdown">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+
+        <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Dropdown
@@ -64,22 +68,23 @@
               <a class="dropdown-item" href="#">Something else here</a>
             </div>
           </li> -->
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
-        <!-- <div class="form-inline my-2 my-lg-0">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
-        </div> -->
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <button id="navbar-signin-btn" class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+        <button id="navbar-log-out-btn" class="btn btn-outline-light my-2 my-sm-0" type="button" style="display: none;">log out</button>
       </div>
     </div>
+    </div>
   </nav>
-<!--------------------------------------END NAV BAR ----------------------------------------------  -->
+  <!--------------------------------------END NAV BAR ----------------------------------------------  -->
 
 
 
 
-<!-- ------------------------------------MAIN CONTAINER-------------------------------------------- -->
+  <!-- ------------------------------------MAIN CONTAINER-------------------------------------------- -->
   <div class="container">
     <div class="space"></div>
 
@@ -110,33 +115,48 @@
           <!-- buttons populate in here -->
         </div>
       </div>
-        <!-- end map layer buttons widget -->
+      <!-- end map layer buttons widget -->
 
-        <!-- 'sign in' | signed in ? 'create thread' : 'cancel thread' widget  -->
+  <!-- go to location -->
+  <div class="col">
+      <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="button" class="btn btn-secondary disabled" ><i class="fas fa-map-marked-alt"></i>
+
+          </button>
+      </div>
+    </div>
+  <!-- end go to location -->
+
+    
+
+      <!-- 'sign in' | signed in ? 'create geoPost' : 'cancel geoPost' widget  -->
       <div class="col d-flex justify-content-end">
         <div class="btn-group " role="group" aria-label="Third group">
           <div id="right-btn">
-            
+
+
             <!-- sign in button -->
-            <button type="button" id="sign-in" class="btn btn-outline-success my-2 my-sm-0" toggle="on">
+            <button type="button" id="sign-in" class="btn btn-outline-warning disabled my-2 my-sm-0" toggle="off"
+              style="display: none;">
               sign in
             </button>
 
-            <!-- create thread button -->
-            <button type="button" id="create-thread" class="btn btn-secondary" toggle="off" style="display: none;">
-                create thread
+
+            <!-- create geoPost button -->
+            <button type="button" id="create-geoPost" class="btn btn-secondary" toggle="on" style="display: ; width: 150px;">
+                <i class="fas fa-map-marker-alt"></i> create geoPost
             </button>
 
-            <!-- cancel create thread button -->
-            <button type="button" id="cancel-thread" class="btn btn-secondary" toggle="off" style="display: none;">
-              cancel thread
+            <!-- cancel create geoPost button -->
+            <button type="button" id="cancel-geoPost" class="btn btn-secondary" toggle="off" style="display: none;">
+              cancel geoPost
             </button>
           </div>
         </div>
       </div>
-      <!-- end 'signin' 'create thread' 'cancel thread' widget -->
+      <!-- end 'signin' 'create geoPost' 'cancel geoPost' widget -->
     </div>
-    <!--------------------------------------- END WIDGETS UNDER MAP-----------------------------------------> 
+    <!--------------------------------------- END WIDGETS UNDER MAP----------------------------------------->
 
 
     <div class="space"></div>
@@ -147,73 +167,160 @@
 
 
 
+
+
       <!------ SIGN IN FORM START------->
-      <div id="sign-in-form">
-      </div>
+      <form id="signin-form" class="form-signin card " toggle="off" style="display: none;">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
+              <p></a>
+              </p>
+            </div>
+
+            <div class="form-label-group">
+              <input id="signinInputEmail" type="email"class="form-control" placeholder="Email address" required
+                autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="signinInputPassword" class="form-control" placeholder="Password" required>
+              <label id="signinInputPassword"  for="inputPassword">Password</label>
+            </div>
+
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div class="space"></div>
+          </div>
+        </div>
+      </form>
       <!------END SIGN IN FORM ------->
 
 
 
 
-      <!-- create thread list -->
-      <div id="thread-list" class="list-group" toggle="on">
-        <!-- threads show up here -->
+
+
+
+
+
+      <!------ SIGN UP  FORM START------->
+      <form id="signup-form" class="form-login card " toggle="off" style="display: none;">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+              <p></a>
+              </p>
+            </div>
+
+            <div class="form-label-group">
+              <input type="email" id="signupInputEmail" class="form-control" placeholder="Email address" required
+                autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="signupInputPassword" class="form-control" placeholder="Password" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+
+            <div class="form-label-group">
+              <input type="password" id="signupInputPasswordConfirm" class="form-control" placeholder="Password"
+                required>
+              <label for="inputPassword">Confirm Password</label>
+            </div>
+
+
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div class="space"></div>
+          </div>
+        </div>
+      </form>
+      <!------END SIGN IN FORM ------->
+
+
+
+
+
+
+
+
+
+      <!-- create geoPost list -->
+      <div id="geoPost-list" class="list-group" toggle="on">
+        <!-- geoPosts show up here -->
       </div>
-      <!-- end create thread list -->
+      <!-- end create geoPost list -->
 
 
 
 
-      <!-- create thread form  -->
-      <form id="create-thread-form" class="card " toggle="off" style="display: none;">
-        <div class="form-label card-header">Create Thread </div>
+      <!-- create geoPost form  -->
+      <form id="create-geoPost-form" class="card " toggle="off" style="display: none;">
+        <div class="form-label card-header"><i class="fas fa-map-marker-alt"></i> Create geoPost </div>
         <div class="container" style="margin: 1em 0">
 
           <!-- longitude | latitude -->
           <div class="form-row align-items-center ">
 
             <!-- latitude -->
-            <div class="col-auto">
+            <div class="col-4">
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <div class="input-group-text">latitude</div>
                 </div>
-                <input type="text" class="form-control thread-input" id="form-latitude">
+                <input type="text" class="form-control geoPost-input" id="form-latitude">
               </div>
             </div>
 
             <!-- longitude -->
-            <div class="col-auto">
+            <div class="col-4">
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <div class="input-group-text">longitude</div>
                 </div>
-                <input type="text" class="form-control thread-input-form" id="form-longitude">
+                <input type="text" class="form-control geoPost-input-form" id="form-longitude">
               </div>
             </div>
 
             <!-- geohash -->
-            <div class="col-auto">
+            <div class="col-4">
               <div class="input-group mb-2">
                 <div class="input-group-prepend ">
                   <div class="input-group-text">geohash</div>
                 </div>
-                <input type="text" class="form-control thread-input-form" id="form-geohash">
+                <input type="text" class="form-control geoPost-input-form" id="form-geohash">
               </div>
             </div>
           </div>
 
           <!-- title -->
           <div class="form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Title</span>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Title</span>
+              </div>
+              <input class="form-control form-control-lg geoPost-input-form" id="form-title">
             </div>
-            <input class="form-control form-control-lg thread-input-form" id="form-title">
           </div>
-
           <!-- message body -->
           <div class="form-group">
-            <textarea class="form-control thread-input-form" id="editor-container" rows="5"
+            <textarea class="form-control geoPost-input-form" id="editor-container" rows="5"
               placeholder="Message Body: What do you want to say?"></textarea>
           </div>
 
@@ -222,20 +329,20 @@
 
           <!-- submit button -->
           <div class="col-auto">
-            <button id="submit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
+            <button id="ssubmit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
           </div>
 
           <!-- endform -->
         </div>
       </form>
-      <!-- end create-thread form -->
+      <!-- end create-geoPost form -->
 
 
 
 
 
-      <!-- show thread -->
-      <!-- end show thread -->
+      <!-- show geoPost -->
+      <!-- end show geoPost -->
 
 
 
@@ -249,11 +356,11 @@
 
     </div>
   </div>
-<!-- ------------------------------------ END MAIN CONTAINER-------------------------------------------- -->
+  <!-- ------------------------------------ END MAIN CONTAINER-------------------------------------------- -->
 
 
 
-<!-- ------------------------------------ DEPENDENCIES START-------------------------------------------- -->
+  <!-- ------------------------------------ DEPENDENCIES START-------------------------------------------- -->
   <!-- leaflet : map rendering -->
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet"></script>
@@ -294,7 +401,7 @@
   <script type="text/javascript" src="./assets/js/config.js"></script>
   <script type="text/javascript" src="./assets/js/app.js"></script>
 
-<!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
+  <!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
 </body>
 
 </html>

@@ -106,40 +106,7 @@
 
     <div id="things-go-here">
         <!-- Login form -->
-<div class="container mt-5">
-        <h2 class="text-center">Login to firebase / with social account</h2>
-        <div class="card">
-          <form [formGroup]="loginForm">
-            <p class="h5 text-center mb-4">Login</p>
-            <div class="md-form">
-              <i class="fa fa-envelope prefix grey-text"></i>
-              <input type="text" formControlName="email" id="email" class="form-control" mdbInputDirective>
-              <label for="email">Your email</label>
-            </div>
-            <div class="md-form">
-              <i class="fa fa-lock prefix grey-text"></i>
-              <input type="password" formControlName="password" id="password" class="form-control" mdbInputDirective>
-              <label for="password">Your password</label>
-              <label class="error">{{errorMessage}}</label>
-            </div>
-            <div class="text-center">
-              <input id="btn" (click)="tryLogin(loginForm.value)" mdbBtn color="deep-orange" class="waves-light" value="Login" mdbWavesEffect>
-            </div>
-            <div class="socialBtns">
-              <button id="fbBtn" (click)="tryFacebookLogin()" style="background-color: #3B5998; margin-top: 20px" mat-button>
-                <i class="fa fa-facebook fa-2x"></i> Login with FaceBook</button>
-              <br>
-              <button id="ggBtn" (click)="tryGoogleLogin()" style="background-color:  #dd4b39;" mat-button><i class="fa fa-google fa-2x"></i>
-                Login with Google</button>
-              <br>
-              <button id="twBtn" (click)="tryTwitterLogin()" style="background-color: #1DA1F2" mat-button><i class="fa fa-twitter fa-2x"></i>
-                Login with Twitter</button>
-              <br><br>No account? <a style="margin-right:130px; color:blue;" routerLink="/register">Create an account</a>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+        
     <!-- end of container -->
   </div>
 
