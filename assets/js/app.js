@@ -2,24 +2,6 @@
 let state = 'thread list';
 console.log(state);
 
-//Stuff to push onto firebase
-// $('#sign-in').on("click", function () {
-//     event.preventDefault();
-
-//     var name = $("#username-input").val().trim();
-//     var password = $('#password-input').val().trim();
-
-//     database.ref("/users").push({
-//         name,
-//         password,
-
-//     });
-//     console.log({
-//         name,
-//         password
-//     });
-// })
-
 ////////// INITIALIZE PAGE ///////////
 
 // initialize map
@@ -211,8 +193,8 @@ const populateThreads = function repopulatesThreadTableWheneverInvoked(threadArr
 };
 ////////// END POPULATE THREAD LIST ///////////
 
-/////////User Sign In //////////
-const signInButtonClicked = function (){
+/////////User log In //////////
+const logInButtonClicked = function (){
     console.log('click');
     event.preventDefault();
 
@@ -240,7 +222,25 @@ const signupSubmitButtonClicked = function () {
 
 //////////END USER SIGN UP//////////
 
+///////Bio/////////////
 
+// const toggleBioEditor = function(){
+//     // $("#bio-text").removeClass("invisible").addClass("visible");
+//     console.log("click");
+// }
+
+/////Recent Threads//////
+
+database.ref().on("child_added", function(childSnapshot){
+    console.log(childSnapshot.val().dataObj);
+
+    var dataObj = childSnapshot.val().dataObj;
+
+    $('#personal-threads').append('<div class="well">' + dataObj + '</div>');
+}, function(errorObject){
+    console.log("Errors handled: " + errorObject.code)
+});
+   
 
 
 ////////// CREATE THREAD FORM ///////////
@@ -300,17 +300,8 @@ const submitButtonClicked = function () {
         body: $("#editor-container").val(),
         user: userData.pushkey1,
     };
-    ///push to fire base////
-    // database.ref("/thread").push({
-    //     dataObj:dateCreated,
-    //     dataObj:$("#form-latitude").val(),
-    //     dataObj:lon,
-    //     dataObj:geohash,
-    //     dataObj:heading,
-    //     dataObj:body,
-    //     dataObj:user.userData,
-
-    // })
+    database.ref("/thread").push(dataObj);
+    
     console.log(dataObj.dateCreated)
     console.log(dataObj.lat)
     console.log(dataObj.lon)
@@ -391,7 +382,8 @@ $(document).on("click", "#cancel-thread", displayFormToggle)
 $(document).on("click", "#submit-btn", submitButtonClicked)
 $(document).on("click", "#signup-button", signupButtonClicked)
 $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
-$(document).on("click", "#sign-in",signInButtonClicked)
+$(document).on("click", "#log-in",logInButtonClicked)
+$(document).on("click", "#edit",toggleBioEditor)
 
 ////////// END EVENT LISTENERS ///////////
 

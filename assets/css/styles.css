@@ -56,3 +56,11 @@ footer{
     height:70%;
     width:70%;
 }
+
+.invisible{
+    display:none;
+}
+
+.visible{
+    display:block;
+}
