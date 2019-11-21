@@ -67,13 +67,17 @@
             </button>
           </div>
           <div class="modal-body">
+            <form action="#" method ="post" onsubmit= "return validation();">
               <input type="text" placeholder="Username" id="username-input" class="form-control">
+              <div id="error"></div>
               <br>
               <input type="password" placeholder="Password" id="password-input" class="form-control">
+              <div id="password-error"></div>
+              </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="log-in" onclick="location.href='profile.html';">Log In</button>
+            <button type="submit" class="btn btn-primary" id="log-in" >Log In</button>
           </div>
         </div>
       </div>

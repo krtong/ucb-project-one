@@ -201,11 +201,58 @@ const logInButtonClicked = function (){
     var username = $("#username-input").val().trim();
     var password = $('#password-input').val().trim();
 
+    if (username == " "){
+        document.getElementById('error').innerHTML = "Username Required";
+         return false;
+         
+     }
+     else if (password == " "){
+         document.getElementById('password-error').innerHTML = "Password Required";
+         return false;
+     }
+     else if (username.length < 5){
+         document.getElementById('error').innerHTML = "Username must be at least 5 characters";
+         return false;
+     }
+     else if (password.length < 5){
+         document.getElementById('password-error').innerHTML = "Password must be at least 5 characters"
+         return false;
+     }
+     else{
+         return true; 
+     };
+
     database.ref("/users").push({
         username,
         password,
     });
-    
+}
+
+/////Log in ///////
+
+function validation(){
+    var username = document.getElementById('username-input').value;
+    var password = document.getElementById('password-input').value;
+
+    if (username == " "){
+       document.getElementById('error').innerHTML = "Username Required";
+        return false;
+        
+    }
+    else if (password == " "){
+        document.getElementById('password-error').innerHTML = "Password Required";
+        return false;
+    }
+    else if (username.length < 5){
+        document.getElementById('error').innerHTML = "Username must be at least 5 characters";
+    }
+    else if (password.length < 5){
+        document.getElementById('password-error').innerHTML = "Password must be at least 5 characters"
+    }
+    else{
+        return true;
+        
+    }
 }
 
 //////////USER SIGN UP//////////
@@ -231,15 +278,15 @@ const signupSubmitButtonClicked = function () {
 
 /////Recent Threads//////
 
-database.ref().on("child_added", function(childSnapshot){
-    console.log(childSnapshot.val().dataObj);
+// database.ref().on("child_added", function(childSnapshot){
+//     console.log(childSnapshot.val().dataObj);
 
-    var dataObj = childSnapshot.val().dataObj;
+//     var dataObj = childSnapshot.val().dataObj;
 
-    $('#personal-threads').append('<div class="well">' + dataObj + '</div>');
-}, function(errorObject){
-    console.log("Errors handled: " + errorObject.code)
-});
+//     $('#personal-threads').append('<div class="well">' + dataObj + '</div>');
+// }, function(errorObject){
+//     console.log("Errors handled: " + errorObject.code)
+// });
    
 
 
@@ -369,9 +416,6 @@ const renderCoords = function updateAllCoorsOnDocument(e, latlng) {
 
 ////////// END HELPER LISTENERS ///////////
 
-
-
-
 ////////// EVENT LISTENERS ///////////
 //initialize event handlers
 mymap.on('drag', renderCoords);
@@ -383,7 +427,7 @@ $(document).on("click", "#submit-btn", submitButtonClicked)
 $(document).on("click", "#signup-button", signupButtonClicked)
 $(document).on("click", "#signup-submit", signupSubmitButtonClicked)
 $(document).on("click", "#log-in",logInButtonClicked)
-$(document).on("click", "#edit",toggleBioEditor)
+// $(document).on("click", "#edit",toggleBioEditor)
 
 ////////// END EVENT LISTENERS ///////////
 
