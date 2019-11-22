@@ -120,8 +120,7 @@
   <!-- go to location -->
   <div class="col">
       <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button id="togglepulse"type="button" class="btn btn-secondary pulse" ><i class="fas fa-map-marked-alt"></i>
-
+          <button id="togglepulse" type="button" class="btn btn-secondary pulse" ><i class="fas fa-map-marked-alt"></i>
           </button>
       </div>
     </div>
@@ -171,6 +170,7 @@
 
       <!------ SIGN IN FORM START------->
       <form id="signin-form" class="form-signin card " toggle="off" style="display: none;">
+        <div class="space"></div>
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
@@ -191,12 +191,6 @@
               <label id="signinInputPassword"  for="inputPassword">Password</label>
             </div>
             
-            <div class="checkbox mb-3">
-              <label>
-                <input type="checkbox" value="remember-me"> Remember me
-                <!-- <div id="valid-signin-message" class="success-feedback" >success code goes here</div> -->
-              </label>
-            </div>
             <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <div id="signin-message" class="text-monospace"></div>
             
@@ -225,36 +219,38 @@
               </p>
             </div>
 
+
             <div class="form-label-group">
-              <input type="email" id="signupInputEmail" class="form-control" placeholder="Email address" required
+              <input type="name" id="signupInputFullName" class="form-control" placeholder="John Smith" required
+                autofocus>
+              <label for="inputEmail">Name</label>
+            </div>
+
+
+            <div class="form-label-group">
+              <input type="email" id="signupInputEmail" class="form-control" placeholder="example@email.com" required
                 autofocus>
               <label for="inputEmail">Email address</label>
             </div>
 
             <div class="form-label-group">
-                <input type="username" id="signupInputUserName" class="form-control" placeholder="Email address" required
+                <input type="username" id="signupInputUserName" class="form-control" placeholder="j.smith" required
                   autofocus>
                 <label for="inputEmail">Username</label>
               </div>
+              
 
             <div class="form-label-group">
-              <input type="password" id="signupInputPassword" class="form-control" placeholder="Password" required>
+              <input type="password" id="signupInputPassword" class="form-control" placeholder="********" required>
               <label for="inputPassword">Password</label>
             </div>
 
-
             <div class="form-label-group">
-              <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="Password"
+              <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="********"
                 required>
               <label for="inputPassword">Confirm Password</label>
             </div>
 
-
-            <div class="checkbox mb-3">
-              <label>
-                <input type="checkbox" value="remember-me"> Remember me
-              </label>
-            </div>
             <button id="sign-up-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <div class="space"></div>
           </div>
@@ -408,7 +404,9 @@
   <script type="text/javascript" src="./assets/js/api.js"></script>
   <script type="text/javascript" src="./assets/js/geohash.js"></script>
   <script type="text/javascript" src="./assets/js/config.js"></script>
+  <script type="text/javascript" src="./assets/js/weatherapi.js"></script>
   <script type="text/javascript" src="./assets/js/app.js"></script>
+  
 
   <!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
 </body>

@@ -31,8 +31,6 @@ const postsRef = db.collection('posts');
 async function getPosts() {
     // Data Structure
     // Collection: public
-    //  Doc: write-your-first-query
-    //    Collection: star-wars-people
     const db = firebase.firestore();
 
     // See Firebase docs: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
@@ -84,26 +82,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
         isSignedIn = true;
-        const {
-            displayName,
-            email,
-            emailVerified,
-            photoURL,
-            isAnonymous,
-            uid,
-            providerData
-        } = user;
-        userProfileObj = {
-            displayName,
-            email,
-            emailVerified,
-            photoURL,
-            isAnonymous,
-            uid,
-            providerData
-        };
+        userProfileObj = user;
         openComponent('geoPost-list');
-        console.log(displayName, 'logged in')
         console.log(userProfileObj)
     } else {
         isSignedIn = false;
@@ -130,8 +110,8 @@ const emailSignIn = function signInWithEmail(email, password) {
             $("#sign-in-submit-btn").removeClass("btn-danger");
             $("#sign-in-submit-btn").addClass("btn-primary")
             $("#signin-message").removeClass("text-danger");
-            $("#signin-message").text('');
-        }, 5000)
+            $("#signin-message").html(`<a href="#" id="go-to-signup" >Create Account</a>`);
+        }, 3000)
     });
 };
 
@@ -214,22 +194,26 @@ const changeLatLon = function changesLatAndLongOnDocument(lat, lon) {
     $('#lon').text(lon.toFixed(5));
 };
 
+const animateMap = function() {
+    setInterval(function () {
+        if (shouldMapKeepPanning) {
+            mymap.panBy([1, 0], {
+                pan: {
+                    animate: true,
+                    duration: 0.01
+                }
+            });
+        };
+    }, 100);
+}
+
 // go to location
 const goToLocation = function () {
     shouldMapKeepPanning = true;
     if ('geolocation' in navigator) {
         // console.log('geolocation available');
         //pan map until location is selected.
-        setInterval(function () {
-            if (shouldMapKeepPanning) {
-                mymap.panBy([1, 0], {
-                    pan: {
-                        animate: true,
-                        duration: 0.01
-                    }
-                });
-            };
-        }, 100);
+ 
         //once location is selected, fly to location. go to location. fly to location
         navigator.geolocation.getCurrentPosition(position => {
             shouldMapKeepPanning = false;
@@ -358,26 +342,6 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
 
 
 
-//////////USER SIGN UP////////////////////USER SIGN UP////////////////////USER SIGN UP//////////
-//when signup in nav is clicked
-const signupButtonClicked = function () {
-    console.log('click');
-};
-
-//when submit button is clicked
-const signupSubmitButtonClicked = function () {
-    console.log('click');
-};
-//////////END USER SIGN UP////////////////END USER SIGN UP////////////////END USER SIGN UP////////
-
-
-
-
-
-
-
-
-
 ////////// CREATE geoPost FORM ///////////////////// CREATE geoPost FORM ///////////////////// CREATE geoPost FORM ///////////
 // const creategeoPostBtnClick = function () {
 //     $("#right-btn").html(`<button type="button" id="cancel-geoPost" class="btn btn-secondary map-btn">cancel geoPost</button>`);
@@ -394,15 +358,20 @@ const signupFormComplete = function () {
 const toggleDisplay = (id, value = "") => $(`#${id}`).css("display", value);
 
 const openComponent = function (divId) {
+    console.log("openComponent()", divId)
     event.preventDefault();
-    const components = ["geoPost-list", "create-geoPost-form", "signin-form"];
+    const components = ["geoPost-list", "create-geoPost-form", "signin-form", "signup-form"];
     const buttons = ["create-geoPost", "navbar-signin-btn"]
 
     //close old components
-    components.forEach(id => toggleDisplay(id, "none"));
-
+    // components.forEach(id => toggleDisplay(id, "none"));
+    $("#things-go-here").children().css("display", "none")
     //open new component
     switch (divId) {
+        
+        case ("go-to-signup") : {
+            toggleDisplay("signup-form");
+        }
         case "create-geoPost": {
             goWhereAfterSigningIn = "create-geoPost";
             if (isSignedIn) toggleDisplay("create-geoPost-form");
@@ -434,6 +403,8 @@ const openComponent = function (divId) {
         };
         case "navbar-log-out-btn": {
             logOut();
+            toggleDisplay("cancel-geoPost", "none")
+            toggleDisplay("create-geoPost")
         };
         case "form-submit-btn": {
             let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
@@ -475,9 +446,8 @@ const openComponent = function (divId) {
         };
         case ("find-my-location") : {
             $("#togglepulse").removeClass("pulse");
-            toggleDisplay("geoPost-list", "none");
             toggleDisplay("geoPost-list");
-        }
+        };
     };
 };
 
@@ -517,6 +487,8 @@ L.terminator().addTo(mymap);
 $("#create-geoPost").attr("class", "btn btn-primary")
 //ask user if they want to go to their location. the way the app is designed right now, they HAVE TO go to location for the app to work properly
 
+toggleDisplay("geoPost-list");
+coordProgression()
 // openComponent("create-geoPost");
 ////////// END INITIALIZATION //////////////////// END INITIALIZATION //////////////////// END INITIALIZATION ///////////
 
@@ -533,7 +505,7 @@ $("#create-geoPost").attr("class", "btn btn-primary")
 mymap.on('drag', coordProgression);
 mymap.on('click', onMapClick);
 $(document).on("click", ".map-btn", toggleLayer)
-$(document).on("click", "#find-my-location, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
+$(document).on("click", "#find-my-location, #go-to-signup, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
     openComponent($(this).attr("id"))
 });
 $(document).on("click", "#find-my-location", goToLocation)
