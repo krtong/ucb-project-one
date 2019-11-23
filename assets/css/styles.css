@@ -11,13 +11,23 @@ nav {
 html, body {
     height: 100%;
  }
-
+/* 
+ .no-padding {
+     padding-right: 0 !important;
+     
+     padding-left: 0 !important;
+ } */
+.h-90 {
+    height: calc(100% - 23px) !important;
+}
 #mapid {
-    height: 100% !important;
+    /* height: 100% !important; */
     width: 100%;
     background-color: rgba(0, 0, 0, 0.486);
 }
-
+.row {
+    margin-right: 0;
+}
 .space {
     margin: 25px;
 }
@@ -33,12 +43,17 @@ html, body {
 #bio-card {
     margin-top:10px;
 }
-
+.nav-item {
+    /* padding: 8px 0; */
+}
 .p-r {
     padding-right: 0;
     padding-left: 0;
     }
 
+.layer-name {
+    width: 150px;
+}
 
     @keyframes shadow-pulse
 {
