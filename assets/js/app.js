@@ -179,7 +179,7 @@ const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
     const {lat,lng} = e.latlng;
     console.log(lat, lng)
-    coordProgression(null,)
+    coordProgression(null, [lat,lng])
     //change latlon on the subnav bar and in the create geoPost form.
     postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
@@ -414,3 +414,5 @@ $(document).on("click", "#zoom-out", function () {
     let [lat, lng] = [0, 0]
     mymap.flyTo([lat, lng], 2);
 });
+
+alert('signin: email: spammytrashtrash@gmail.com, )
