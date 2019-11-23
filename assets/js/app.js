@@ -101,7 +101,7 @@ const logOut = function () {
 const rdmLatLon = function randomLatitudeAndLongitudeArray() {
     const randomNum = (min, max) => Math.random() * (max - min) + min;
     const lat = randomNum(33, 45);
-    const lon = randomNum(-128, -80);
+    const lon = randomNum(-90, -80);
     return [lat, lon];
 }
 
