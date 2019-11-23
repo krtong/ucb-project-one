@@ -414,5 +414,3 @@ $(document).on("click", "#zoom-out", function () {
     let [lat, lng] = [0, 0]
     mymap.flyTo([lat, lng], 2);
 });
-
-alert('signin: email: spammytrashtrash@gmail.com, )
