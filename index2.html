@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!--------------------------------------STYLE SHEETS START ----------------------------------------------  -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+
+  <!-- leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+
+  <!-- Quill: rich text editor CSS -->
+  <!-- <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.4/quill.bubble.css" /> -->
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.4/quill.snow.css" />
+  <!-- <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" /> -->
+  <link rel="stylesheet" href="./assets/css/richtexteditor.css" />
+
+  <!-- Firebase Auth UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+
+  <!--------------------------------------END STYLE SHEETS ----------------------------------------------  -->
+  <title>mapChat</title>
+</head>
+
+<body>
+
+
+
+
+
+  <!-------------------------------------- NAVBAR ----------------------------------------------  -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+
+    <a class="navbar-brand" href="#">mapChat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <!-- <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
+        </li>
+        <li class="nav-item">
+          <!-- <a class="nav-link" href="#">Link</a> -->
+        </li>
+
+        <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li> -->
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Work in progress...</a>
+        </li>
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <button id="navbar-signin-btn" class="btn btn-outline-success my-2 my-sm-0" type="button">sign in</button>
+        <button id="navbar-log-out-btn" class="btn btn-outline-light my-2 my-sm-0" type="button"
+          style="display: none;">log out</button>
+      </div>
+    </div>
+    </div>
+  </nav>
+  <!--------------------------------------END NAV BAR ----------------------------------------------  -->
+
+
+
+
+  <!-- ------------------------------------MAIN CONTAINER-------------------------------------------- -->
+  <div class="container">
+    <div class="space"></div>
+
+    <div class="map jumbotron" id="mapid" style="height: 500px !important;">
+      <!------- MAP VIEWPORT EMBED HERE--------->
+    </div>
+
+    <!------------------------------ WIDGETS UNDER MAP START-------------------------------->
+    <div class="row">
+
+      <!-- longitude | latitude widget -->
+      <!-- <div class="col">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-outline-warning disabled">latitude</button>
+            <button type="button" id="lat" class="btn btn-outline-warning disabled">####.####</button>
+            <button type="button" class="btn btn-outline-warning disabled">longitude</button>
+            <button type="button" id="lon" class="btn btn-outline-warning disabled">###.#####</button>
+          </div>
+        </div>
+      </div> -->
+      <!-- end longitude | latitude widget -->
+
+
+      <!-- map layer button widget -->
+      <div class="col">
+        <div id="layer-btns-go-here" class="btn-group mr-2" role="group" aria-label="Second group">
+          <!-- buttons populate in here -->
+        </div>
+      </div>
+      <!-- end map layer buttons widget -->
+
+      <!-- go to location -->
+      <div class="col">
+        <div class="btn-group"></div>
+        <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
+          <button id="togglepulse" type="button" class="btn btn-secondary pulse">
+            <i class="fas fa-map-marked-alt"></i>
+          </button>
+        </div>
+        <div id="day-night-layer" class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="button" class="btn btn-secondary "><i class="fas fa-sun"></i>
+          </button>
+        </div>
+        <div id="time-zone-layer" class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="button" class="btn btn-secondary">
+            <i class="fas fa-clock"></i>
+          </button>
+        </div>
+
+        <div id="zoom-out" class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="button" class="btn btn-secondary">
+            <i class="fas fa-globe-americas"></i>
+          </button>
+        </div>
+      </div>
+      <!-- end go to location -->
+
+
+
+
+
+      <!-- 'sign in' | signed in ? 'create geoPost' : 'cancel geoPost' widget  -->
+      <div class="col d-flex justify-content-end">
+        <div class="btn-group " role="group" aria-label="Third group">
+          <div id="right-btn">
+
+
+            <!-- sign in button -->
+            <button type="button" id="sign-in" class="btn btn-outline-warning disabled my-2 my-sm-0" toggle="off"
+              style="display: none;">
+              sign in
+            </button>
+
+
+            <!-- create geoPost button -->
+            <button type="button" id="create-geoPost" class="btn btn-secondary" toggle="on"
+              style="display: ; width: 150px;">
+              <i class="fas fa-map-marker-alt"></i> create geoPost
+            </button>
+
+            <!-- cancel create geoPost button -->
+            <button type="button" id="cancel-geoPost" class="btn btn-secondary" toggle="off" style="display: none;">
+              back
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- end 'signin' 'create geoPost' 'cancel geoPost' widget -->
+    </div>
+    <!--------------------------------------- END WIDGETS UNDER MAP----------------------------------------->
+
+
+    <div class="space"></div>
+
+    <!--------------------------------------- MAIN COMPONENTS START----------------------------------------->
+    <div id="main-div">
+
+
+
+
+
+
+      <!------ SIGN IN FORM START------->
+      <form id="signin-form" class="form-signin card " toggle="off" style="display: none;">
+        <div class="space"></div>
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
+              <p></a>
+              </p>
+            </div>
+
+            <div class="form-label-group">
+              <input id="signinInputEmail" type="email" class="form-control" placeholder="Email address" required
+                autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="signinInputPassword" class="form-control" placeholder="Password" required>
+              <label id="signinInputPassword" for="inputPassword">Password</label>
+            </div>
+
+            <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div id="signin-message" class="text-monospace"></div>
+
+            <div class="space"></div>
+          </div>
+        </div>
+      </form>
+      <!------END SIGN IN FORM ------->
+
+
+
+
+
+
+
+
+
+      <!------ SIGN UP  FORM START------->
+      <form id="signup-form" class="form-login card " toggle="off" style="display: none;">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+              <p></a>
+              </p>
+            </div>
+
+
+            <div class="form-label-group">
+              <input type="name" id="signupInputFullName" class="form-control" placeholder="John Smith" required
+                autofocus>
+              <label for="inputEmail">Name</label>
+            </div>
+
+
+            <div class="form-label-group">
+              <input type="email" id="signupInputEmail" class="form-control" placeholder="example@email.com" required
+                autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="username" id="signupInputUserName" class="form-control" placeholder="j.smith" required
+                autofocus>
+              <label for="inputEmail">Username</label>
+            </div>
+
+
+            <div class="form-label-group">
+              <input type="password" id="signupInputPassword" class="form-control" placeholder="********" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="********" required>
+              <label for="inputPassword">Confirm Password</label>
+            </div>
+
+            <button id="sign-up-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div class="space"></div>
+          </div>
+        </div>
+      </form>
+      <!------END SIGN IN FORM ------->
+
+
+      <!-- ---- SHOW POST ------ -->
+      <div>
+
+      </div>
+      <!-- ---- END SHOW POST ------ -->
+
+
+
+
+
+
+
+      <!-- create geoPost list -->
+      <div id="geoPost-list" class="list-group" toggle="on">
+        <!-- geoPosts show up here -->
+      </div>
+      <!-- end create geoPost list -->
+
+
+
+
+      <!-- create geoPost form  -->
+      <form id="create-geoPost-form" class="card " toggle="off" style="display: none;">
+        <div class="form-label card-header"><i class="fas fa-map-marker-alt"></i> Create geoPost </div>
+        <div class="container" style="margin: 1em 0">
+
+          <!-- longitude | latitude -->
+          <div class="form-row align-items-center ">
+
+            <!-- latitude -->
+            <div class="col-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">latitude</div>
+                </div>
+                <input type="text" class="form-control geoPost-input" id="form-latitude">
+              </div>
+            </div>
+
+            <!-- longitude -->
+            <div class="col-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">longitude</div>
+                </div>
+                <input type="text" class="form-control geoPost-input-form" id="form-longitude">
+              </div>
+            </div>
+
+            <!-- geohash -->
+            <div class="col-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend ">
+                  <div class="input-group-text">geohash</div>
+                </div>
+                <input type="text" class="form-control geoPost-input-form" id="form-geohash">
+              </div>
+            </div>
+          </div>
+
+          <!-- title -->
+          <div class="form-group">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Title</span>
+              </div>
+              <input class="form-control form-control-lg geoPost-input-form" id="form-title">
+            </div>
+          </div>
+          <!-- message body -->
+          <div class="form-group">
+            <textarea class="form-control geoPost-input-form" id="editor-container" rows="5"
+              placeholder="Message Body: What do you want to say?"></textarea>
+          </div>
+
+          <!-- decoded message body -->
+          <div id="html" style="display: none;"></div>
+
+          <!-- submit button -->
+          <div class="col-auto">
+            <button id="form-submit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
+          </div>
+
+          <!-- endform -->
+        </div>
+      </form>
+      <!-- end create-geoPost form -->
+
+
+
+
+
+      <!-- show geoPost -->
+      <!-- end show geoPost -->
+
+
+
+
+      <!-- show profile page -->
+      <!-- end show profile page -->
+
+
+
+      <div class="space"></div>
+
+    </div>
+  </div>
+  <!-- ------------------------------------ END MAIN CONTAINER-------------------------------------------- -->
+
+
+
+  <!-- ------------------------------------ DEPENDENCIES START-------------------------------------------- -->
+  <!-- leaflet : map rendering -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet"></script>
+  <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
+  <script src="./assets/js/dependencies/mapLayers.js"></script>
+  <script src="./assets/js/dependencies/L.timezone.js"></script>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS : event handlers and responsive css formatting-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Firebase: database  -->
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/fakedatabase.js"></script>
+  <!-- <script src="./assets/js/firebase.js"></script> -->
+
+  <!-- OAuth: user login / password encryption  -->
+  <script type="text/javascript" src="https://unpkg.com/jso/dist/jso.js"></script>
+
+  <!-- moment JS: show timestamps -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+
+  <!-- weather underground -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- quill: rich text editor & dependencies-->
+  <script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.4/to-markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.3.1/markdown-it.min.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/richtexteditor.js"></script>
+
+  <!-- main js files -->
+  <script type="text/javascript" src="./assets/js/api.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/geohash.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/config.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/weatherapi.js"></script>
+  <script type="text/javascript" src="./assets/js/app.js"></script>
+
+  <!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
+</body>
+
+</html>

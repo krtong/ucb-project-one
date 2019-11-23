@@ -83,309 +83,318 @@
   <!--------------------------------------END NAV BAR ----------------------------------------------  -->
 
 
+<div class="row container-fluid h-90">
+<div class="col-6 map jumbotron" id="mapid" style="border-radius: 0;" style="position: absolute;">
+                <!------- MAP VIEWPORT EMBED HERE--------->
+             
+          
+</div>
+<div class="col-6">
 
+        <div class="container">
+                <div class="space"></div>
+              
+              
+                <!------------------------------ WIDGETS UNDER MAP START-------------------------------->
+                <div class="row">
+              
+                  <!-- longitude | latitude widget -->
+                  <!-- <div class="col">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                      <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="button" class="btn btn-outline-warning disabled">latitude</button>
+                        <button type="button" id="lat" class="btn btn-outline-warning disabled">####.####</button>
+                        <button type="button" class="btn btn-outline-warning disabled">longitude</button>
+                        <button type="button" id="lon" class="btn btn-outline-warning disabled">###.#####</button>
+                      </div>
+                    </div>
+                  </div> -->
+                  <!-- end longitude | latitude widget -->
+              
+              
+                  <!-- map layer button widget -->
+                  <div class="col">
+                    <div id="layer-btns-go-here" class="btn-group mr-2" role="group" aria-label="Second group">
+                      <!-- buttons populate in here -->
+                    </div>
+                  </div>
+                  <!-- end map layer buttons widget -->
+              
+                  <!-- go to location -->
+                  <div class="col">
+                    <div class="btn-group"></div>
+                    <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
+                      <button id="togglepulse" type="button" class="btn btn-secondary pulse">
+                        <i class="fas fa-map-marked-alt"></i>
+                      </button>
+                    </div>
+                    <div id="day-night-layer" class="btn-group mr-2" role="group" aria-label="Second group">
+                      <button type="button" class="btn btn-secondary "><i class="fas fa-sun"></i>
+                      </button>
+                    </div>
+                    <div id="time-zone-layer" class="btn-group mr-2" role="group" aria-label="Second group">
+                      <button type="button" class="btn btn-secondary">
+                        <i class="fas fa-clock"></i>
+                      </button>
+                    </div>
+              
+                    <div id="zoom-out" class="btn-group mr-2" role="group" aria-label="Second group">
+                      <button type="button" class="btn btn-secondary">
+                        <i class="fas fa-globe-americas"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- end go to location -->
+              
+              
+              
+              
+              
+                  <!-- 'sign in' | signed in ? 'create geoPost' : 'cancel geoPost' widget  -->
+                  <div class="col d-flex justify-content-end">
+                    <div class="btn-group " role="group" aria-label="Third group">
+                      <div id="right-btn">
+              
+              
+                        <!-- sign in button -->
+                        <button type="button" id="sign-in" class="btn btn-outline-warning disabled my-2 my-sm-0" toggle="off"
+                          style="display: none;">
+                          sign in
+                        </button>
+              
+              
+                        <!-- create geoPost button -->
+                        <button type="button" id="create-geoPost" class="btn btn-secondary" toggle="on"
+                          style="display: ; width: 150px;">
+                          <i class="fas fa-map-marker-alt"></i> create geoPost
+                        </button>
+              
+                        <!-- cancel create geoPost button -->
+                        <button type="button" id="cancel-geoPost" class="btn btn-secondary" toggle="off" style="display: none;">
+                          back
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end 'signin' 'create geoPost' 'cancel geoPost' widget -->
+                </div>
+                <!--------------------------------------- END WIDGETS UNDER MAP----------------------------------------->
+              
+              
+                <div class="space"></div>
+              
+                <!--------------------------------------- MAIN COMPONENTS START----------------------------------------->
+                <div id="main-div">
+              
+              
+              
+              
+              
+              
+                  <!------ SIGN IN FORM START------->
+                  <form id="signin-form" class="form-signin card " toggle="off" style="display: none;">
+                    <div class="space"></div>
+                    <div class="row">
+                      <div class="col-3"></div>
+                      <div class="col-6">
+                        <div class="text-center mb-4">
+                          <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
+                          <p></a>
+                          </p>
+                        </div>
+              
+                        <div class="form-label-group">
+                          <input id="signinInputEmail" type="email" class="form-control" placeholder="Email address" required
+                            autofocus>
+                          <label for="inputEmail">Email address</label>
+                        </div>
+              
+                        <div class="form-label-group">
+                          <input type="password" id="signinInputPassword" class="form-control" placeholder="Password" required>
+                          <label id="signinInputPassword" for="inputPassword">Password</label>
+                        </div>
+              
+                        <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <div id="signin-message" class="text-monospace"></div>
+              
+                        <div class="space"></div>
+                      </div>
+                    </div>
+                  </form>
+                  <!------END SIGN IN FORM ------->
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                  <!------ SIGN UP  FORM START------->
+                  <form id="signup-form" class="form-login card " toggle="off" style="display: none;">
+                    <div class="row">
+                      <div class="col-3"></div>
+                      <div class="col-6">
+                        <div class="text-center mb-4">
+                          <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+                          <p></a>
+                          </p>
+                        </div>
+              
+              
+                        <div class="form-label-group">
+                          <input type="name" id="signupInputFullName" class="form-control" placeholder="John Smith" required
+                            autofocus>
+                          <label for="inputEmail">Name</label>
+                        </div>
+              
+              
+                        <div class="form-label-group">
+                          <input type="email" id="signupInputEmail" class="form-control" placeholder="example@email.com" required
+                            autofocus>
+                          <label for="inputEmail">Email address</label>
+                        </div>
+              
+                        <div class="form-label-group">
+                          <input type="username" id="signupInputUserName" class="form-control" placeholder="j.smith" required
+                            autofocus>
+                          <label for="inputEmail">Username</label>
+                        </div>
+              
+              
+                        <div class="form-label-group">
+                          <input type="password" id="signupInputPassword" class="form-control" placeholder="********" required>
+                          <label for="inputPassword">Password</label>
+                        </div>
+              
+                        <div class="form-label-group">
+                          <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="********" required>
+                          <label for="inputPassword">Confirm Password</label>
+                        </div>
+              
+                        <button id="sign-up-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <div class="space"></div>
+                      </div>
+                    </div>
+                  </form>
+                  <!------END SIGN IN FORM ------->
+              
+              
+                  <!-- ---- SHOW POST ------ -->
+                  <div>
+              
+                  </div>
+                  <!-- ---- END SHOW POST ------ -->
+              
+              
+              
+              
+              
+              
+              
+                  <!-- create geoPost list -->
+                  <div id="geoPost-list" class="list-group" toggle="on">
+                    <!-- geoPosts show up here -->
+                  </div>
+                  <!-- end create geoPost list -->
+              
+              
+              
+              
+                  <!-- create geoPost form  -->
+                  <form id="create-geoPost-form" class="card " toggle="off" style="display: none;">
+                    <div class="form-label card-header"><i class="fas fa-map-marker-alt"></i> Create geoPost </div>
+                    <div class="container" style="margin: 1em 0">
+              
+                      <!-- longitude | latitude -->
+                      <div class="form-row align-items-center ">
+              
+                        <!-- latitude -->
+                        <div class="col-4">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">latitude</div>
+                            </div>
+                            <input type="text" class="form-control geoPost-input" id="form-latitude">
+                          </div>
+                        </div>
+              
+                        <!-- longitude -->
+                        <div class="col-4">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">longitude</div>
+                            </div>
+                            <input type="text" class="form-control geoPost-input-form" id="form-longitude">
+                          </div>
+                        </div>
+              
+                        <!-- geohash -->
+                        <div class="col-4">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend ">
+                              <div class="input-group-text">geohash</div>
+                            </div>
+                            <input type="text" class="form-control geoPost-input-form" id="form-geohash">
+                          </div>
+                        </div>
+                      </div>
+              
+                      <!-- title -->
+                      <div class="form-group">
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">Title</span>
+                          </div>
+                          <input class="form-control form-control-lg geoPost-input-form" id="form-title">
+                        </div>
+                      </div>
+                      <!-- message body -->
+                      <div class="form-group">
+                        <textarea class="form-control geoPost-input-form" id="editor-container" rows="5"
+                          placeholder="Message Body: What do you want to say?"></textarea>
+                      </div>
+              
+                      <!-- decoded message body -->
+                      <div id="html" style="display: none;"></div>
+              
+                      <!-- submit button -->
+                      <div class="col-auto">
+                        <button id="form-submit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
+                      </div>
+              
+                      <!-- endform -->
+                    </div>
+                  </form>
+                  <!-- end create-geoPost form -->
+              
+              
+              
+              
+              
+                  <!-- show geoPost -->
+                  <!-- end show geoPost -->
+              
+              
+              
+              
+                  <!-- show profile page -->
+                  <!-- end show profile page -->
+              
+              
+              
+                  <div class="space"></div>
+              
+                </div>
+              </div>
+</div>
+    
+
+
+</div>
 
   <!-- ------------------------------------MAIN CONTAINER-------------------------------------------- -->
-  <div class="container">
-    <div class="space"></div>
-
-    <div class="map jumbotron" id="mapid" style="height: 500px !important;">
-      <!------- MAP VIEWPORT EMBED HERE--------->
-    </div>
-
-    <!------------------------------ WIDGETS UNDER MAP START-------------------------------->
-    <div class="row">
-
-      <!-- longitude | latitude widget -->
-      <!-- <div class="col">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-          <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-outline-warning disabled">latitude</button>
-            <button type="button" id="lat" class="btn btn-outline-warning disabled">####.####</button>
-            <button type="button" class="btn btn-outline-warning disabled">longitude</button>
-            <button type="button" id="lon" class="btn btn-outline-warning disabled">###.#####</button>
-          </div>
-        </div>
-      </div> -->
-      <!-- end longitude | latitude widget -->
-
-
-      <!-- map layer button widget -->
-      <div class="col">
-        <div id="layer-btns-go-here" class="btn-group mr-2" role="group" aria-label="Second group">
-          <!-- buttons populate in here -->
-        </div>
-      </div>
-      <!-- end map layer buttons widget -->
-
-      <!-- go to location -->
-      <div class="col">
-        <div class="btn-group"></div>
-        <div id="find-my-location" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button id="togglepulse" type="button" class="btn btn-secondary pulse">
-            <i class="fas fa-map-marked-alt"></i>
-          </button>
-        </div>
-        <div id="day-night-layer" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="button" class="btn btn-secondary "><i class="fas fa-sun"></i>
-          </button>
-        </div>
-        <div id="time-zone-layer" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="button" class="btn btn-secondary">
-            <i class="fas fa-clock"></i>
-          </button>
-        </div>
-
-        <div id="zoom-out" class="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="button" class="btn btn-secondary">
-            <i class="fas fa-globe-americas"></i>
-          </button>
-        </div>
-      </div>
-      <!-- end go to location -->
-
-
-
-
-
-      <!-- 'sign in' | signed in ? 'create geoPost' : 'cancel geoPost' widget  -->
-      <div class="col d-flex justify-content-end">
-        <div class="btn-group " role="group" aria-label="Third group">
-          <div id="right-btn">
-
-
-            <!-- sign in button -->
-            <button type="button" id="sign-in" class="btn btn-outline-warning disabled my-2 my-sm-0" toggle="off"
-              style="display: none;">
-              sign in
-            </button>
-
-
-            <!-- create geoPost button -->
-            <button type="button" id="create-geoPost" class="btn btn-secondary" toggle="on"
-              style="display: ; width: 150px;">
-              <i class="fas fa-map-marker-alt"></i> create geoPost
-            </button>
-
-            <!-- cancel create geoPost button -->
-            <button type="button" id="cancel-geoPost" class="btn btn-secondary" toggle="off" style="display: none;">
-              back
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- end 'signin' 'create geoPost' 'cancel geoPost' widget -->
-    </div>
-    <!--------------------------------------- END WIDGETS UNDER MAP----------------------------------------->
-
-
-    <div class="space"></div>
-
-    <!--------------------------------------- MAIN COMPONENTS START----------------------------------------->
-    <div id="main-div">
-
-
-
-
-
-
-      <!------ SIGN IN FORM START------->
-      <form id="signin-form" class="form-signin card " toggle="off" style="display: none;">
-        <div class="space"></div>
-        <div class="row">
-          <div class="col-3"></div>
-          <div class="col-6">
-            <div class="text-center mb-4">
-              <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
-              <p></a>
-              </p>
-            </div>
-
-            <div class="form-label-group">
-              <input id="signinInputEmail" type="email" class="form-control" placeholder="Email address" required
-                autofocus>
-              <label for="inputEmail">Email address</label>
-            </div>
-
-            <div class="form-label-group">
-              <input type="password" id="signinInputPassword" class="form-control" placeholder="Password" required>
-              <label id="signinInputPassword" for="inputPassword">Password</label>
-            </div>
-
-            <button id="sign-in-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            <div id="signin-message" class="text-monospace"></div>
-
-            <div class="space"></div>
-          </div>
-        </div>
-      </form>
-      <!------END SIGN IN FORM ------->
-
-
-
-
-
-
-
-
-
-      <!------ SIGN UP  FORM START------->
-      <form id="signup-form" class="form-login card " toggle="off" style="display: none;">
-        <div class="row">
-          <div class="col-3"></div>
-          <div class="col-6">
-            <div class="text-center mb-4">
-              <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
-              <p></a>
-              </p>
-            </div>
-
-
-            <div class="form-label-group">
-              <input type="name" id="signupInputFullName" class="form-control" placeholder="John Smith" required
-                autofocus>
-              <label for="inputEmail">Name</label>
-            </div>
-
-
-            <div class="form-label-group">
-              <input type="email" id="signupInputEmail" class="form-control" placeholder="example@email.com" required
-                autofocus>
-              <label for="inputEmail">Email address</label>
-            </div>
-
-            <div class="form-label-group">
-              <input type="username" id="signupInputUserName" class="form-control" placeholder="j.smith" required
-                autofocus>
-              <label for="inputEmail">Username</label>
-            </div>
-
-
-            <div class="form-label-group">
-              <input type="password" id="signupInputPassword" class="form-control" placeholder="********" required>
-              <label for="inputPassword">Password</label>
-            </div>
-
-            <div class="form-label-group">
-              <input type="email" id="signupInputPasswordConfirm" class="form-control" placeholder="********" required>
-              <label for="inputPassword">Confirm Password</label>
-            </div>
-
-            <button id="sign-up-submit-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            <div class="space"></div>
-          </div>
-        </div>
-      </form>
-      <!------END SIGN IN FORM ------->
-
-
-      <!-- ---- SHOW POST ------ -->
-      <div>
-
-      </div>
-      <!-- ---- END SHOW POST ------ -->
-
-
-
-
-
-
-
-      <!-- create geoPost list -->
-      <div id="geoPost-list" class="list-group" toggle="on">
-        <!-- geoPosts show up here -->
-      </div>
-      <!-- end create geoPost list -->
-
-
-
-
-      <!-- create geoPost form  -->
-      <form id="create-geoPost-form" class="card " toggle="off" style="display: none;">
-        <div class="form-label card-header"><i class="fas fa-map-marker-alt"></i> Create geoPost </div>
-        <div class="container" style="margin: 1em 0">
-
-          <!-- longitude | latitude -->
-          <div class="form-row align-items-center ">
-
-            <!-- latitude -->
-            <div class="col-4">
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">latitude</div>
-                </div>
-                <input type="text" class="form-control geoPost-input" id="form-latitude">
-              </div>
-            </div>
-
-            <!-- longitude -->
-            <div class="col-4">
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">longitude</div>
-                </div>
-                <input type="text" class="form-control geoPost-input-form" id="form-longitude">
-              </div>
-            </div>
-
-            <!-- geohash -->
-            <div class="col-4">
-              <div class="input-group mb-2">
-                <div class="input-group-prepend ">
-                  <div class="input-group-text">geohash</div>
-                </div>
-                <input type="text" class="form-control geoPost-input-form" id="form-geohash">
-              </div>
-            </div>
-          </div>
-
-          <!-- title -->
-          <div class="form-group">
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Title</span>
-              </div>
-              <input class="form-control form-control-lg geoPost-input-form" id="form-title">
-            </div>
-          </div>
-          <!-- message body -->
-          <div class="form-group">
-            <textarea class="form-control geoPost-input-form" id="editor-container" rows="5"
-              placeholder="Message Body: What do you want to say?"></textarea>
-          </div>
-
-          <!-- decoded message body -->
-          <div id="html" style="display: none;"></div>
-
-          <!-- submit button -->
-          <div class="col-auto">
-            <button id="form-submit-btn" type="button" class="btn btn-primary mb-2">Submit</button>
-          </div>
-
-          <!-- endform -->
-        </div>
-      </form>
-      <!-- end create-geoPost form -->
-
-
-
-
-
-      <!-- show geoPost -->
-      <!-- end show geoPost -->
-
-
-
-
-      <!-- show profile page -->
-      <!-- end show profile page -->
-
-
-
-      <div class="space"></div>
-
-    </div>
-  </div>
   <!-- ------------------------------------ END MAIN CONTAINER-------------------------------------------- -->
 
 
@@ -397,6 +406,7 @@
   <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
   <script src="./assets/js/dependencies/mapLayers.js"></script>
   <script src="./assets/js/dependencies/L.timezone.js"></script>
+  <!-- <script src="https://api4.windy.com/assets/libBoot.js."></script> -->
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS : event handlers and responsive css formatting-->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -430,7 +440,7 @@
   <script type="text/javascript" src="./assets/js/api.js"></script>
   <script type="text/javascript" src="./assets/js/dependencies/geohash.js"></script>
   <script type="text/javascript" src="./assets/js/dependencies/config.js"></script>
-  <script type="text/javascript" src="./assets/js/dependencies/weatherapi.js"></script>
+  <script type="text/javascript" src="./assets/js/weatherapi.js"></script>
   <script type="text/javascript" src="./assets/js/app.js"></script>
 
   <!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
