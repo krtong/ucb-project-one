@@ -19,7 +19,6 @@ let tpp = threadsPerPage;
 let geoPostArrLocal;
 let daynight = false;
 let timezone = false;
-
 const db = firebase.firestore();
 const usersRef = db.collection('users');
 const postsRef = db.collection('posts');
@@ -27,16 +26,12 @@ async function getPosts() {
     // Data Structure
     // Collection: public
     const db = firebase.firestore();
-
     // See Firebase docs: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-
     // Define collection
     const collection = db.collection('posts');
     // const users = db.collection('users');
-
     // Get collection snapshot
     const snapshot = await collection.get();
-
     // Loop through snapshot.docs
     return snapshot.docs.map(doc => ({
         __id: doc.id,
@@ -94,7 +89,6 @@ const emailSignUp = function signUpWithEmail(email, password) {
     });
 };
 ``
-
 const logOut = function () {
     firebase.auth().signOut().then(function () {
         isSignedIn = true;
@@ -103,8 +97,6 @@ const logOut = function () {
     });
     isSignedInOrOut()
 };
-
-
 
 const rdmLatLon = function randomLatitudeAndLongitudeArray() {
     const randomNum = (min, max) => Math.random() * (max - min) + min;
@@ -133,8 +125,6 @@ const addNewMapLayer = (layerKey = currentMapLayer) => {
     Object.keys(mapLayers).forEach((a, i) => mapBtnHTML += `<button id="button${i+1}" type="button" class="btn btn-${i === currentMapLayerIdx ? bRCG() : 'secondary'} map-btn" number="${i+1}">${i+1}</button>`);
     $("#layer-btns-go-here").html(mapBtnHTML);
 };
-
-
 
 const toggleLayer = function togglesBetweenMapLayers() {
     const btnNumber = parseInt($(this).attr("number")) - 1;
@@ -204,7 +194,7 @@ const onMapClick = function coordinatesPopUpOnMapClick(e) {
 };
 
 //when the coordinates on the map viewport change, everything associated with said-coordinates need to change too.
-const coordProgression = function updateAllCoorsOnDocument(e, latlng = mymap.getCenter()) {
+const coordProgression = function updateAllCoorsOnDocument(e, latlng) {
     shouldMapKeepPanning = false;
     //lat & lng = either the provided latlng OR the center of the viewport
     const {lat,lng} = latlng ? latlng : mymap.getCenter();
@@ -213,9 +203,6 @@ const coordProgression = function updateAllCoorsOnDocument(e, latlng = mymap.get
     populategeoPosts(localThreadArr);
     changeLatLon(lat, lng);
 };
-
-
-
 
 //once render coords has sorted the geoPosts into an array
 const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPostArr, threadStart = 0) {
@@ -315,6 +302,10 @@ const changeMainDiv = function (divId) {
             toggleDisplay("create-geoPost")
             break;
         };
+        case ("find-my-location"): {
+            $("#togglepulse").removeClass("pulse");
+            toggleDisplay("geoPost-list");
+        };
         case "form-submit-btn": {
             let d = new Date(); //Mon Nov 18 2019 16:37:14 GMT-0800 (Pacific Standard Time) 
             const day = d.getDate();
@@ -351,30 +342,32 @@ const changeMainDiv = function (divId) {
                 toggleDisplay("geoPost-list");
             };
         };
-        case ("find-my-location"): {
-            $("#togglepulse").removeClass("pulse");
-            toggleDisplay("geoPost-list");
-        };
     };
 };
-
 
 const postAppendLatLng = function (lat, lng) {
     $("#form-latitude").val(lat.toString())
     $("#form-longitude").val(lng.toString())
 };
 
-const daynightToggle = function () {
-    if (!daynight) {
-        terminator = L.terminator().addTo(mymap);
-        daynight = true;
-    } else {
-        daynight = false;
-        mymap.removeLayer(terminator)
-    }
-}
+// init
+runQuery();
+isSignedInOrOut()
+mymap.setView(rdmLatLon(), 12);
+addNewMapLayer();
+$("#create-geoPost").attr("class", "btn btn-primary")
+toggleDisplay("geoPost-list");
+coordProgression(null)
+animateMap()
+mymap.on('click', onMapClick);
+mymap.on('drag', coordProgression);
+$(document).on("click", ".map-btn", toggleLayer)
+$(document).on("click", "#find-my-location", goToLocation)
+$(document).on("click", "#find-my-location, #go-to-signup, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
+    changeMainDiv($(this).attr("id"))
+});
 
-const timezoneToggle = function () {
+$(document).on("click", "#time-zone-layer", function () {
     if (!timezone) {
         t = L.timezones.bindPopup(function (layer) {
             return new Date().toLocaleString("en-GB", {
@@ -387,33 +380,23 @@ const timezoneToggle = function () {
         timezone = false;
         mymap.removeLayer(t)
     }
-}
-
-runQuery();
-isSignedInOrOut()
-mymap.setView(rdmLatLon(), 12);
-addNewMapLayer();
-$("#create-geoPost").attr("class", "btn btn-primary")
-toggleDisplay("geoPost-list");
-coordProgression(null)
-animateMap()
-
-//initialize event handlers
-mymap.on('drag', coordProgression);
-mymap.on('click', onMapClick);
-$(document).on("click", ".map-btn", toggleLayer)
-$(document).on("click", "#find-my-location, #go-to-signup, #form-submit-btn, #create-geoPost, #cancel-geoPost, #navbar-signin-btn, #sign-in-submit-btn, #navbar-log-out-btn", function (e) {
-    changeMainDiv($(this).attr("id"))
 });
-$(document).on("click", "#find-my-location", goToLocation)
-$(document).on("click", "#day-night-layer", daynightToggle)
-
-$(document).on("click", "#time-zone-layer", timezoneToggle);
 $(document).on("click", "a.page-link", function () {
     event.preventDefault();
     let idx = ($(this).attr("number") - 1) * tpp;
     populategeoPosts(geoPostArrLocal, idx)
-})
+});
+
+$(document).on("click", "#day-night-layer", function () {
+    if (!daynight) {
+        terminator = L.terminator().addTo(mymap);
+        daynight = true;
+    } else {
+        daynight = false;
+        mymap.removeLayer(terminator)
+    }
+});
+
 $(document).on("click", ".geoPost-li", function () {
     event.preventDefault();
     let lon = $(this).attr("lon");
@@ -421,7 +404,8 @@ $(document).on("click", ".geoPost-li", function () {
     $(".geoPost-li").removeClass("active")
     $(this).addClass("active")
     mymap.flyTo([lat, lon], 13);
-})
+});
+
 $(document).on("click", "#zoom-out", function () {
     event.preventDefault();
     let [lat, lng] = [0, 0]
