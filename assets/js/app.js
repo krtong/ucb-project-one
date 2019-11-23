@@ -211,7 +211,7 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
     geoPosts sorted by distance </div>`; //create html to place into $("#geoPost-list").
     let pB = threadStart === 0;
     let pageNumber = 0;
-    let paginationHTML = `<nav aria-label="..."><ul class="pagination"><li class="page-item ${pB  ? `disabled` : ``}"><${pB ? `span` : `a`} class="page-link" number="${tpp - threadStart + 1}">Previous</${pB ? `span` : `a`}>
+    let paginationHTML = `<nav aria-label="..."><ul class="pagination"><li class="page-item ${pB  ? `disabled` : ``}"><${pB ? `span` : `a`} class="page-link" number="${(threadStart/tpp)}">Previous</${pB ? `span` : `a`}>
     </li>`
     
     //remove old markers before repopulating
@@ -235,7 +235,6 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
         //create new markers
         geoPostMarkerArray.push(L.marker([lat, lon]).addTo(mymap));
     });
-
     geoPostArrLocal.forEach((a, i) => {
         let modulo = i % tpp === 0;
         pageNumber = modulo ? pageNumber + 1 : pageNumber;
@@ -244,7 +243,7 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
 
 
     let nB = threadStart > geoPostArrLocal.length - 1 - tpp;
-    paginationHTML += `<li class="page-item ${nB ? 'disabled' : ''}"><${nB ? `span` : `a`} number="${pageNumber}" class="page-link " href="#">Next</${nB ? `span` : `a`}></li>`
+    paginationHTML += `<li class="page-item ${nB ? 'disabled' : ''}"><${nB ? `span` : `a`} number="${(threadStart/tpp) + 2}" class="page-link " href="#">Next</${nB ? `span` : `a`}></li>`
     paginationHTML += ` </ul></nav>`
     geoPostListHTML += `</div></div> `
     geoPostListHTML += paginationHTML
