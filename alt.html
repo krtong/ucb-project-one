@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!--------------------------------------STYLE SHEETS START ----------------------------------------------  -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+
+  <!-- leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+
+  <!-- Quill: rich text editor CSS -->
+  <!-- <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.4/quill.bubble.css" /> -->
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.4/quill.snow.css" />
+  <!-- <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" /> -->
+  <link rel="stylesheet" href="./assets/css/richtexteditor.css" />
+
+  <!-- Firebase Auth UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+
+  <!--------------------------------------END STYLE SHEETS ----------------------------------------------  -->
+  <title>mapChat</title>
+</head>
+
+<body>
+
+
+
+        <body>
+                <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+                  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+                  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+                  <ul class="navbar-nav px-3">
+                    <li class="nav-item text-nowrap">
+                      <a class="nav-link" href="#">Sign out</a>
+                    </li>
+                  </ul>
+                </nav>
+            
+                <div class="container-fluid">
+                  <div class="row">
+                    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                      <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                          <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                              <span data-feather="home"></span>
+                              Dashboard <span class="sr-only">(current)</span>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="file"></span>
+                              Orders
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="shopping-cart"></span>
+                              Products
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="users"></span>
+                              Customers
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="bar-chart-2"></span>
+                              Reports
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="layers"></span>
+                              Integrations
+                            </a>
+                          </li>
+                        </ul>
+            
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                          <span>Saved reports</span>
+                          <a class="d-flex align-items-center text-muted" href="#">
+                            <span data-feather="plus-circle"></span>
+                          </a>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="file-text"></span>
+                              Current month
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="file-text"></span>
+                              Last quarter
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="file-text"></span>
+                              Social engagement
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span data-feather="file-text"></span>
+                              Year-end sale
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </nav>
+            
+                    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 h-100 px-4 map" id="mapid">
+                         
+                    </main>
+                  </div>
+                </div>
+  <!-- ------------------------------------ END MAIN CONTAINER-------------------------------------------- -->
+
+
+
+  <!-- ------------------------------------ DEPENDENCIES START-------------------------------------------- -->
+  <!-- leaflet : map rendering -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet"></script>
+  <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
+  <script src="./assets/js/dependencies/mapLayers.js"></script>
+  <script  src="./assets/js/dependencies/L.timezone.js"></script>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS : event handlers and responsive css formatting-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Firebase: database  -->
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/fakedatabase.js"></script>
+  <!-- <script src="./assets/js/firebase.js"></script> -->
+
+  <!-- OAuth: user login / password encryption  -->
+  <script type="text/javascript" src="https://unpkg.com/jso/dist/jso.js"></script>
+
+  <!-- moment JS: show timestamps -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+
+  <!-- weather underground -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- quill: rich text editor & dependencies-->
+  <!-- <script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.4/to-markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.3.1/markdown-it.min.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/richtexteditor.js"></script> -->
+
+  <!-- main js files -->
+  <script type="text/javascript" src="./assets/js/api.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/geohash.js"></script>
+  <script type="text/javascript" src="./assets/js/dependencies/config.js"></script>
+  <script type="text/javascript" src="./assets/js/weatherapi.js"></script>
+  <script type="text/javascript" src="./assets/js/app.js"></script>
+
+  <!-- ------------------------------------ END DEPENDENCIES-------------------------------------------- -->
+</body>
+
+</html>
