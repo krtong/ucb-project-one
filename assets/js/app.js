@@ -179,7 +179,7 @@ const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
     const {lat,lng} = e.latlng;
     console.log(lat, lng)
-    coordProgression(null, e.latlng)
+    coordProgression(null,)
     //change latlon on the subnav bar and in the create geoPost form.
     postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
@@ -211,8 +211,7 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
     geoPosts sorted by distance </div>`; //create html to place into $("#geoPost-list").
     let pB = threadStart === 0;
     let pageNumber = 0;
-    let paginationHTML = `<nav aria-label="..."><ul class="pagination"><li class="page-item ${pB  ? `disabled` : ``}"><${pB ? `span` : `a`} class="page-link" number="${(threadStart/tpp)}">Previous</${pB ? `span` : `a`}>
-    </li>`
+    let paginationHTML = ``
     
     //remove old markers before repopulating
     if (geoPostMarkerArray[0] !== undefined) {
@@ -235,15 +234,20 @@ const populategeoPosts = function repopulatesgeoPostTableWheneverInvoked(geoPost
         //create new markers
         geoPostMarkerArray.push(L.marker([lat, lon]).addTo(mymap));
     });
+    let currentNumber;
     geoPostArrLocal.forEach((a, i) => {
         let modulo = i % tpp === 0;
+        let isCurrent = modulo && modulo && threadStart === i;
+        if (isCurrent){ currentNumber = pageNumber}
         pageNumber = modulo ? pageNumber + 1 : pageNumber;
         paginationHTML += modulo && threadStart === i ? `<li class="page-item active" aria-current="page"><span class="page-link">${pageNumber}<span class="sr-only">(current)</span></span></li>` : modulo ? `<li class="page-item"><a  number="${pageNumber}" class="page-link"  href="#">${pageNumber}</a></li>` : ``;
     });
 
 
     let nB = threadStart > geoPostArrLocal.length - 1 - tpp;
-    paginationHTML += `<li class="page-item ${nB ? 'disabled' : ''}"><${nB ? `span` : `a`} number="${(threadStart/tpp) + 2}" class="page-link " href="#">Next</${nB ? `span` : `a`}></li>`
+    paginationHTML = paginationHTML = `<nav aria-label="..."><ul class="pagination"><li class="page-item ${pB  ? `disabled` : ``}"><${pB ? `span` : `a`} class="page-link" number="${currentNumber}">Previous</${pB ? `span` : `a`}>
+    </li>` + paginationHTML
+    paginationHTML += `<li class="page-item ${nB ? 'disabled' : ''}"><${nB ? `span` : `a`} number="${currentNumber+2}" class="page-link " href="#">Next</${nB ? `span` : `a`}></li>`
     paginationHTML += ` </ul></nav>`
     geoPostListHTML += `</div></div> `
     geoPostListHTML += paginationHTML
