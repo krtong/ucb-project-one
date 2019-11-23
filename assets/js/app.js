@@ -178,16 +178,15 @@ const goToLocation = function () {
 const popup = L.popup();
 const onMapClick = function coordinatesPopUpOnMapClick(e) {
     const {lat,lng} = e.latlng;
-
+    console.log(lat, lng)
+    coordProgression(null, e.latlng)
     //change latlon on the subnav bar and in the create geoPost form.
     postAppendLatLng(lat, lng);
     changeLatLon(lat, lng);
-
     //remove popup after 3 seconds
     setTimeout(function () {
         popup.remove()
     }, 1750);
-    coordProgression()
     $("#form-geohash").val(encodeGeoHash([lat, lng]));
     //show popup
     popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
@@ -335,9 +334,10 @@ const changeMainDiv = function (divId) {
                 $("#editor-container").val('');
                 $('#submit-button').toggleClass('btn-primary').toggleClass('btn-success').append()
                 $("#submit-button").append('')
-                coordProgression()
-                //real database: 
                 postsRef.add(dataObj)
+                coordProgression(null, [dataObj.lat, dataObj.lon])
+                runQuery()
+                //real database: 
                 toggleDisplay("create-geoPost", "none");
                 toggleDisplay("geoPost-list");
             };
