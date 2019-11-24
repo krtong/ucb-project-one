@@ -1,5 +1,5 @@
 
-# project-1 : Air BnB for bathrooms
+# project-1 : mapChat, geographical social media app
 
 
 # team members
