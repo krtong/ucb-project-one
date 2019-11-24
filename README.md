@@ -1,5 +1,6 @@
 
-# project-1 : mapChat, geographical social media app
+# project-1 : coord progression
+## geographical social media app
 
 
 # team members
