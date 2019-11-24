@@ -24,7 +24,7 @@
 
 
 # Todo: Components List
-[ x ] Embed map
+[x] Embed map
 [ x ] Connect to firestore
 [ x ] Connect to firebase auth
 [ x ] Create sign in
