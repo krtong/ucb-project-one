@@ -23,7 +23,7 @@
 - Jquery for state changes and event handling (npm / nodejs is not allowed)
 
 
-# Todo: Components List
+# Todo: Components etc..
 - [x] Embed map
 
 - [x] Connect to firestore
