@@ -24,19 +24,19 @@
 
 
 # Todo: Components List
-[x] Embed map
-[x] Connect to firestore
-[x] Connect to firebase auth
-[x] Create sign in
-[x] Create post form
-[x] Create Post list sorted by coordinates
+[ x ] Embed map
+[ x ] Connect to firestore
+[ x ] Connect to firebase auth
+[ x ] Create sign in
+[ x ] Create post form
+[ x ] Create Post list sorted by coordinates
 
-[] Query database by geohash quadrants for greater efficiency.
-[] Create user profile
-[] Create post list by user
-[] Create subthreads for posts
-[] Create post replies
-[] Create categories for different kinds of posts, 
+[ ] Query database by geohash quadrants for greater efficiency.
+[ ] Create user profile
+[ ] Create post list by user
+[ ] Create subthreads for posts
+[ ] Create post replies
+[ ] Create categories for different kinds of posts, 
 [] Create more useful map overlays and layers, including weather, temp, heatmaps based on which post has the most replies, clicks, or some other metric. 
 [] Improve ui
 [] Use a better design pattern like pub-sub to handle state changes more efficiently and allow for greater complexity of components.
