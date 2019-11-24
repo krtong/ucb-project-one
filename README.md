@@ -1,6 +1,6 @@
 
 # project-1 : coord progression
-## geographical social media app
+geographical social media app
 
 
 # team members
