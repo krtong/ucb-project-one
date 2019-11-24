@@ -8,30 +8,36 @@
 - Kevin T.
 - Lila O.
 
-# current concept: waze for bathrooms
-- create a web app that allows users to geotag bathroom classifieds.
-- allow users to rate geotagged bathroom locations.
-- allow bathroom owners to rate users.
-- (optional) PayPal
-- (optional) OAuth for secure userids
+# current concept: generalized social media map app
+- Reddit and Twitter focus almost entirely on discussions around news articles with strangers.  Facebook, Snapchat, and Instagram are almost entirely around images with friends. Build a web app prototype that builds social interactions around shared geography.
+- Include a map that allows people to see posts made by users. 
+- Create signup, login, and create-post form.
+- Create a list of posts sorted primarily by distance from user.
 
-  
-
-# APIs needed for project:
-- API to store database (firebase)
-- Map API to geotag locations and display map with geotagged locations
-- OAuth for secure login
-- Paypal api for payment
-
-### check out these apis
-- Air BnB
-  
+# Dpendencies needed for project:
+- Firebase firestore (database)
+- Firebase auth (user tracking and password encryption)
+- Leafletjs for maps
+- Quill for Rich text editing of posts.
+- Bootstrap for layout
+- Jquery for state changes and event handling (npm / nodejs is not allowed)
 
 
 # Todo: Components List
-1. Create Map with geotagged locations of bathrooms.
-2. Create User sign up/login
-3. Create bathroom classified
-4. Create User Bathroom rating system
-5. Create Host user rating system.
-5. Create Host user rating system.
+[x] Embed map
+[x] Connect to firestore
+[x] Connect to firebase auth
+[x] Create sign in
+[x] Create post form
+[x] Create Post list sorted by coordinates
+
+[] Query database by geohash quadrants for greater efficiency.
+[] Create user profile
+[] Create post list by user
+[] Create subthreads for posts
+[] Create post replies
+[] Create categories for different kinds of posts, 
+[] Create more useful map overlays and layers, including weather, temp, heatmaps based on which post has the most replies, clicks, or some other metric. 
+[] Improve ui
+[] Use a better design pattern like pub-sub to handle state changes more efficiently and allow for greater complexity of components.
+[] Refactor code to be more like publishable code and less like blocks of trash
